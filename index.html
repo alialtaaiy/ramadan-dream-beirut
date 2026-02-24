@@ -689,14 +689,21 @@ async function render(){
       $("gregLine").textContent  = out.gregText;
 
       const t = out.timings;
-      $("imsak").textContent   = toAmPm(t.imsak);
-      $("fajr").textContent    = toAmPm(t.fajr);
-      $("sunrise").textContent = toAmPm(t.sunrise);
-      $("dhuhr").textContent   = toAmPm(t.dhuhr);
-      $("asr").textContent     = toAmPm(t.asr);
-      $("maghrib").textContent = toAmPm(t.maghrib);
-      $("isha").textContent    = toAmPm(t.isha);
 
+// ⭐ تعديل الوقف الشيعي
+if ($("sect").value === "shia"){
+  t.maghrib = addMinutes(t.maghrib, 15);
+  t.imsak   = addMinutes(t.fajr, -10);
+}
+
+$("imsak").textContent   = toAmPm(t.imsak);
+$("fajr").textContent    = toAmPm(t.fajr);
+$("sunrise").textContent = toAmPm(t.sunrise);
+$("dhuhr").textContent   = toAmPm(t.dhuhr);
+$("asr").textContent     = toAmPm(t.asr);
+$("maghrib").textContent = toAmPm(t.maghrib);
+$("isha").textContent    = toAmPm(t.isha);
+      
       setStatus("تم ✅");
       setTimeout(()=>setStatus("جاهز"), 1200);
     }catch(e){
