@@ -486,6 +486,246 @@
     manualOffset: 0
   };
 
-  function setStatus(t){ $("statusPill").textContent = t; }
+  function setStatus(t){
+    const el = $("statusPill");
+    if (el) el.textContent = t;
+  }
 
-  function
+  function loadSettings(){
+    const saved = JSON.parse(localStorage.getItem("hb_ramadan_settings") || "null");
+    $("city").value = (saved && saved.city) ? saved.city : DEFAULTS.city;
+    $("sect").value = (saved && saved.sect) ? saved.sect : DEFAULTS.sect;
+    $("offset").value = String((saved && typeof saved.manualOffset === "number") ? saved.manualOffset : DEFAULTS.manualOffset);
+    if (saved?.date) $("date").value = saved.date;
+  }
+
+  function loadSettingsSafe(){
+    try { loadSettings(); }
+    catch(e){
+      localStorage.removeItem("hb_ramadan_settings");
+      loadSettings();
+    }
+  }
+
+  function saveSettings(){
+    const data = {
+      city: $("city").value,
+      sect: $("sect").value,
+      manualOffset: parseInt($("offset").value,10) || 0,
+      date: $("date").value || ""
+    };
+    localStorage.setItem("hb_ramadan_settings", JSON.stringify(data));
+  }
+
+  function getBaseDate(){
+    const v = $("date").value;
+    if (v) return new Date(v + "T00:00:00");
+    const now = new Date();
+    return new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  }
+
+  function addDays(date, days){
+    const d = new Date(date);
+    d.setDate(d.getDate() + days);
+    return d;
+  }
+
+  function getDisplayDate(){
+    const base = getBaseDate();
+    const sect = $("sect").value;
+    const manualOffset = parseInt($("offset").value,10) || 0;
+    const sectOffset = (sect === "shia") ? DEFAULTS.sectOffsetShia : DEFAULTS.sectOffsetSunni;
+    return addDays(base, sectOffset + manualOffset);
+  }
+
+  function toAmPm(hhmm){
+    if (!hhmm || hhmm === "—") return "—";
+    const m = String(hhmm).match(/^(\d{1,2}):(\d{2})/);
+    if(!m) return hhmm;
+    let h = parseInt(m[1],10);
+    const min = m[2];
+    const ampm = (h >= 12) ? "PM" : "AM";
+    h = h % 12; if (h === 0) h = 12;
+    return `${h}:${min} ${ampm}`;
+  }
+
+  async function fetchTimingsAndDates(date, city){
+    const d = String(date.getDate()).padStart(2,"0");
+    const m = String(date.getMonth()+1).padStart(2,"0");
+    const y = String(date.getFullYear());
+
+    const url = `https://api.aladhan.com/v1/timingsByCity/${d}-${m}-${y}?city=${encodeURIComponent(city)}&country=Iraq&method=4`;
+    const res = await fetch(url, { cache: "no-store" });
+    const json = await res.json();
+    const data = json?.data;
+
+    const t = data?.timings || {};
+    const clean = (v) => String(v || "").slice(0,5);
+
+    const hijri = data?.date?.hijri;
+    const greg  = data?.date?.gregorian;
+
+    const hijriText = hijri
+      ? `${hijri.day} ${hijri.month?.ar || hijri.month?.en || ""} ${hijri.year} هـ`
+      : "—";
+
+    const gregText = greg
+      ? `${greg.day} ${greg.month?.en || ""} ${greg.year}`
+      : "—";
+
+    return {
+      timings: {
+        imsak: clean(t.Imsak || t.Fajr),
+        fajr: clean(t.Fajr),
+        sunrise: clean(t.Sunrise),
+        dhuhr: clean(t.Dhuhr),
+        asr: clean(t.Asr),
+        maghrib: clean(t.Maghrib),
+        isha: clean(t.Isha),
+      },
+      hijriText,
+      gregText
+    };
+  }
+
+  const DUAS = [
+    "اللهم اجعلنا في هذا اليوم من المقبولين، واغفر لنا وارحمنا برحمتك يا أرحم الراحمين.",
+    "اللهم ارزقنا صدق التوبة، وصفاء القلب، وحسن الخاتمة، وبارك لنا في أعمالنا.",
+    "اللهم اجعل هذا اليوم فرجاً لكل مهموم، وشفاءً لكل مريض، ورزقاً واسعاً لنا ولأهلنا.",
+    "اللهم اجعلنا من أهل القرآن، ووفقنا لقيام الليل، واغسل قلوبنا من كل همّ وحزن.",
+    "اللهم تقبل صيامنا وقيامنا، واهدنا لأحسن الأخلاق لا يهدي لأحسنها إلا أنت.",
+    "اللهم ارزقنا بركة الوقت، ونور البصيرة، وراحة البال، وسعة الرزق.",
+    "اللهم اجعل لنا في هذا اليوم دعوة لا تُرد، وافتح لنا أبواب الخير من حيث لا نحتسب.",
+    "اللهم احفظ أهلنا وأولادنا وبلدنا، وأدم علينا الأمن والعافية والستر."
+  ];
+  function getDuaForDay(){
+    const d = new Date();
+    const key = d.getDate();
+    return DUAS[(key - 1) % DUAS.length];
+  }
+
+  async function buildImageMarquee(){
+    const track = $("imgTrack");
+    const marquee = $("marqueeBox");
+    const noBox = $("noImagesBox");
+    if (!track || !marquee || !noBox) return;
+
+    track.innerHTML = "";
+    noBox.style.display = "none";
+    marquee.style.display = "block";
+
+    const candidates = [];
+    for (let i=1;i<=30;i++){
+      candidates.push(`images/${i}.jpg`, `images/${i}.jpeg`, `images/${i}.png`);
+    }
+
+    const exists = (src) => new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => resolve(true);
+      img.onerror = () => resolve(false);
+      img.src = src + `?v=${Date.now()}`;
+    });
+
+    const found = [];
+    for (const src of candidates){
+      if (found.length >= 6) break;
+      // eslint-disable-next-line no-await-in-loop
+      if (await exists(src)) found.push(src);
+    }
+
+    if (found.length === 0){
+      marquee.style.display = "none";
+      noBox.style.display = "block";
+      return;
+    }
+
+    const full = found.concat(found);
+    for (const src of full){
+      const div = document.createElement("div");
+      div.className = "pic";
+      const img = document.createElement("img");
+      img.src = src;
+      img.alt = "حلم بيروت";
+      div.appendChild(img);
+      track.appendChild(div);
+    }
+  }
+
+  async function render(){
+    setStatus("يتم التحديث…");
+
+    const date = getDisplayDate();
+    const city = $("city").value;
+    const sect = $("sect").value;
+
+    $("cityPill").textContent = (city === "Basra") ? "البصرة" : "بغداد";
+
+    const sectLabel = (sect === "shia") ? "الوقف الشيعي" : "الوقف السني";
+    $("line1").textContent = `التاريخ الحالي (حسب ${sectLabel})`;
+
+    $("duaDayPill").textContent = "اليوم";
+    $("duaText").textContent = getDuaForDay();
+
+    try{
+      const out = await fetchTimingsAndDates(date, city);
+
+      $("hijriLine").textContent = out.hijriText;
+      $("gregLine").textContent  = out.gregText;
+
+      const t = out.timings;
+      $("imsak").textContent   = toAmPm(t.imsak);
+      $("fajr").textContent    = toAmPm(t.fajr);
+      $("sunrise").textContent = toAmPm(t.sunrise);
+      $("dhuhr").textContent   = toAmPm(t.dhuhr);
+      $("asr").textContent     = toAmPm(t.asr);
+      $("maghrib").textContent = toAmPm(t.maghrib);
+      $("isha").textContent    = toAmPm(t.isha);
+
+      setStatus("تم ✅");
+      setTimeout(()=>setStatus("جاهز"), 1200);
+    }catch(e){
+      ["imsak","fajr","sunrise","dhuhr","asr","maghrib","isha"].forEach(id=> $(id).textContent="—");
+      setStatus("تعذر جلب المواقيت");
+    }
+  }
+
+  function openSettings(){
+    $("settingsModal").style.display = "flex";
+    $("settingsModal").setAttribute("aria-hidden","false");
+  }
+  function closeSettings(){
+    $("settingsModal").style.display = "none";
+    $("settingsModal").setAttribute("aria-hidden","true");
+  }
+
+  document.addEventListener("DOMContentLoaded", async () => {
+    loadSettingsSafe();
+    closeSettings();
+
+    // سلايدر
+    try { await buildImageMarquee(); } catch(e){}
+
+    // مواقيت: تشغيل + إعادة محاولة حتى ما تختفي بعد refresh
+    try { await render(); } catch(e){}
+    setTimeout(() => { render(); }, 450);
+  });
+
+  // إذا الصفحة رجعت من الكاش
+  window.addEventListener("pageshow", () => { render(); });
+
+  // Events
+  $("toggleSettings").addEventListener("click", openSettings);
+  $("btnClose").addEventListener("click", closeSettings);
+  $("settingsModal").addEventListener("click", (e)=>{
+    if (e.target === $("settingsModal")) closeSettings();
+  });
+
+  $("btnSave").addEventListener("click", ()=>{ saveSettings(); closeSettings(); render(); setStatus("تم الحفظ ✅"); });
+  $("btnRefreshTop").addEventListener("click", render);
+  $("btnToday").addEventListener("click", ()=>{ $("date").value=""; saveSettings(); render(); });
+
+  $("city").addEventListener("change", render);
+  $("sect").addEventListener("change", render);
+  $("offset").addEventListener("change", render);
+  $("date").addEventListener("change", render);
+</script>
