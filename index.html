@@ -225,10 +225,21 @@
       animation: scrollX 22s linear infinite;
     }
     .marquee:hover{ animation-play-state: paused; } /* اختياري: يوقف عند hover */
-    @keyframes scrollX{
-      from{ transform: translateX(0); }
-      to{ transform: translateX(-50%); }
-    }
+    .marquee{
+  --shift: 0px;            /* راح ننطيها قيمة من JS */
+  display:flex;
+  align-items:center;
+  gap:12px;
+  width:max-content;
+  padding: 10px 12px;
+  animation: scrollX 22s linear infinite;
+  will-change: transform;
+}
+
+@keyframes scrollX{
+  from{ transform: translateX(0); }
+  to{ transform: translateX(calc(-1 * var(--shift))); }
+}
     .pic{
       width: 190px;
       height: 95px;
@@ -695,6 +706,10 @@
         box.appendChild(img);
         track.appendChild(box);
       }
+      requestAnimationFrame(() => {
+  const half = track.scrollWidth / 2;
+  track.style.setProperty("--shift", half + "px");
+});
     }
 
     function openSettings(){
