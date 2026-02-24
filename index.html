@@ -1,45 +1,443 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<title>تقويم رمضان — حلم بيروت</title>
-<style>
-body {
-  font-family: Arial, sans-serif;
-  background: #0b1c2c;
-  color: white;
-  text-align: center;
-  padding: 40px;
-}
-.card {
-  background: #12283a;
-  padding: 20px;
-  border-radius: 12px;
-  max-width: 500px;
-  margin: auto;
-}
-h1 { color: gold; }
-a {
-  display: block;
-  margin: 10px;
-  padding: 12px;
-  background: gold;
-  color: black;
-  text-decoration: none;
-  border-radius: 8px;
-}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>تقويم رمضان — حلم بيروت</title>
+
+  <style>
+    :root{
+      --bg:#071826;
+      --card:#0e2a3f;
+      --card2:#0b2234;
+      --gold:#f5c400;
+      --text:#eaf2ff;
+      --muted:#b9c7da;
+      --line:rgba(255,255,255,.12);
+      --shadow: 0 18px 50px rgba(0,0,0,.35);
+      --radius:18px;
+    }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Tahoma, Arial, sans-serif;
+      background: radial-gradient(1200px 600px at 50% 0%, #0e3a55 0%, var(--bg) 55%);
+      color:var(--text);
+      padding: 22px;
+    }
+    .wrap{ max-width: 980px; margin: 0 auto; }
+    .top{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:14px; margin-bottom: 16px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:14px;
+    }
+    .logo{
+      width:56px; height:56px; border-radius:14px;
+      background: linear-gradient(135deg, rgba(245,196,0,.25), rgba(255,255,255,.06));
+      display:flex; align-items:center; justify-content:center;
+      overflow:hidden; border:1px solid var(--line);
+    }
+    .logo img{ width:100%; height:100%; object-fit:cover; display:block; }
+    .title h1{ margin:0; font-size: 26px; color: var(--gold); letter-spacing:.2px; }
+    .title p{ margin:6px 0 0; color: var(--muted); font-size: 14px; }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 16px;
+    }
+    @media (max-width: 900px){
+      .grid{ grid-template-columns: 1fr; }
+    }
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+      overflow:hidden;
+    }
+    .cardHeader{
+      padding: 14px 16px;
+      background: rgba(0,0,0,.18);
+      border-bottom: 1px solid var(--line);
+      display:flex; align-items:center; justify-content:space-between; gap: 10px;
+    }
+    .cardHeader h2{
+      margin:0; font-size: 16px; color: var(--gold);
+      display:flex; align-items:center; gap:8px;
+    }
+    .cardBody{ padding: 16px; }
+    .row{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 520px){
+      .row{ grid-template-columns: 1fr; }
+    }
+
+    label{ display:block; font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+    select, input, button{
+      width:100%;
+      padding: 12px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: rgba(0,0,0,.22);
+      color: var(--text);
+      outline:none;
+      font-size: 14px;
+    }
+    input[type="number"]{ direction:ltr; text-align:left; }
+    .hint{ font-size: 12px; color: var(--muted); margin-top: 6px; line-height:1.5; }
+
+    .big{
+      background: linear-gradient(180deg, rgba(245,196,0,.16), rgba(0,0,0,.20));
+      border: 1px solid rgba(245,196,0,.35);
+      border-radius: 16px;
+      padding: 14px;
+      display:grid;
+      gap: 8px;
+    }
+    .big .k{ color: var(--muted); font-size: 12px; }
+    .big .v{ font-size: 18px; font-weight: 700; }
+    .big .vGold{ color: var(--gold); }
+
+    .times{
+      display:grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    @media (max-width: 720px){
+      .times{ grid-template-columns: 1fr 1fr; }
+    }
+    .t{
+      background: rgba(0,0,0,.22);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px;
+    }
+    .t .name{ color: var(--muted); font-size: 12px; }
+    .t .val{ font-size: 16px; font-weight: 700; margin-top: 6px; }
+
+    .btns{ display:grid; gap:10px; margin-top: 10px; }
+    .btn{
+      display:block; text-decoration:none;
+      background: var(--gold);
+      color:#071826;
+      font-weight: 800;
+      border-radius: 14px;
+      padding: 12px;
+      text-align:center;
+      border: 0;
+    }
+    .btn.secondary{
+      background: rgba(245,196,0,.12);
+      color: var(--gold);
+      border: 1px solid rgba(245,196,0,.35);
+    }
+    .footerNote{
+      margin-top: 12px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height:1.6;
+    }
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(245,196,0,.12);
+      border: 1px solid rgba(245,196,0,.30);
+      color: var(--gold);
+      font-size: 12px;
+      white-space:nowrap;
+    }
+  </style>
 </head>
+
 <body>
-<div class="card">
-<h1>تقويم رمضان — حلم بيروت</h1>
-<p>مرحباً بكم في صفحة مطعم حلم بيروت</p>
-<p>قريباً سيتم عرض مواقيت الإفطار والتقويم</p>
+  <div class="wrap">
+    <div class="top">
+      <div class="brand">
+        <div class="logo" title="شعار المطعم">
+          <!-- ارفع صورة باسم logo.png داخل نفس الريبو ليظهر الشعار تلقائياً -->
+          <img src="logo.png" alt="Logo" onerror="this.remove(); this.parentElement.textContent='HB'; this.parentElement.style.color='#f5c400'; this.parentElement.style.fontWeight='800';"/>
+        </div>
+        <div class="title">
+          <h1>تقويم رمضان — حلم بيروت</h1>
+          <p>مذاق بيروت الأصيل بأطباق فاخرة وأجواء تأخذك إلى البحر المتوسط • الدوام 24 ساعة</p>
+        </div>
+      </div>
+      <div class="pill" id="statusPill">جاهز</div>
+    </div>
 
-<a href="https://www.facebook.com/helemrest/">Facebook</a>
-<a href="https://www.instagram.com/helem.rest">Instagram</a>
-<a href="https://wa.me/9647801111722">WhatsApp</a>
+    <div class="grid">
+      <!-- الإعدادات -->
+      <div class="card">
+        <div class="cardHeader">
+          <h2>⚙️ الإعدادات</h2>
+          <button id="btnSave" class="btn secondary" style="width:auto;padding:10px 12px;">حفظ</button>
+        </div>
+        <div class="cardBody">
+          <div class="row">
+            <div>
+              <label>المحافظة</label>
+              <select id="city">
+                <option value="Baghdad">بغداد</option>
+                <option value="Basra">البصرة</option>
+              </select>
+              <div class="hint">حاليًا المناطق: “جميع المناطق”. لاحقًا نضيف مناطق تفصيلية.</div>
+            </div>
 
-</div>
+            <div>
+              <label>المذهب</label>
+              <select id="sect">
+                <option value="sunni">الوقف السني</option>
+                <option value="shia">الوقف الشيعي</option>
+              </select>
+              <div class="hint">قد يختلف بدء الشهر حسب الجهة الشرعية.</div>
+            </div>
+
+            <div>
+              <label>تصحيح يوم رمضان (±1)</label>
+              <select id="offset">
+                <option value="0">0 (بدون تصحيح)</option>
+                <option value="1">+1 يوم</option>
+                <option value="-1">-1 يوم</option>
+              </select>
+              <div class="hint">إذا كان عندك: السني اليوم 7 والشيعي اليوم 6، خلّي الشيعي -1 (افتراضي).</div>
+            </div>
+
+            <div>
+              <label>اختر تاريخ (اختياري)</label>
+              <input id="date" type="date"/>
+              <div class="hint">إذا خليته فارغ، يعتمد على تاريخ اليوم تلقائياً.</div>
+            </div>
+          </div>
+
+          <div class="footerNote">
+            ✅ المواقيت يتم جلبها تلقائياً من API مجاني.  
+            إذا تغيّر المصدر/الطريقة نقدر نخليها خيار أيضاً.
+          </div>
+        </div>
+      </div>
+
+      <!-- عرض اليوم والمواقيت -->
+      <div class="card">
+        <div class="cardHeader">
+          <h2>🕌 اليوم والمواقيت</h2>
+          <button id="btnRefresh" class="btn secondary" style="width:auto;padding:10px 12px;">تحديث</button>
+        </div>
+        <div class="cardBody">
+          <div class="big">
+            <div class="k">اليوم</div>
+            <div class="v" id="line1">—</div>
+            <div class="k">التاريخ الهجري</div>
+            <div class="v vGold" id="hijriLine">—</div>
+            <div class="k">التاريخ الميلادي</div>
+            <div class="v" id="gregLine">—</div>
+          </div>
+
+          <div class="times" id="times">
+            <div class="t"><div class="name">الإمساك</div><div class="val" id="imsak">—</div></div>
+            <div class="t"><div class="name">الفجر</div><div class="val" id="fajr">—</div></div>
+            <div class="t"><div class="name">الشروق</div><div class="val" id="sunrise">—</div></div>
+            <div class="t"><div class="name">الظهر</div><div class="val" id="dhuhr">—</div></div>
+            <div class="t"><div class="name">العصر</div><div class="val" id="asr">—</div></div>
+            <div class="t"><div class="name">المغرب (الإفطار)</div><div class="val" id="maghrib">—</div></div>
+            <div class="t"><div class="name">العشاء</div><div class="val" id="isha">—</div></div>
+          </div>
+
+          <div class="btns">
+            <a class="btn" href="https://www.facebook.com/helemrest/" target="_blank" rel="noopener">Facebook</a>
+            <a class="btn" href="https://www.instagram.com/helem.rest?igsh=bHU3azE0dGdseGVv" target="_blank" rel="noopener">Instagram</a>
+            <a class="btn" href="https://wa.me/9647701111722" target="_blank" rel="noopener">📞 واتساب: +964 770 111 1722</a>
+            <a class="btn" href="https://wa.me/9647801111722" target="_blank" rel="noopener">📞 واتساب: +964 780 111 1722</a>
+            <a class="btn secondary" href="#" id="mapBtn">📍 الموقع: اليرموك – 4 شوارع</a>
+          </div>
+
+          <div class="footerNote">
+            ملاحظة: حساب “اليوم من رمضان” يعتمد على التقويم الهجري في المتصفح + خيار التصحيح، وقد يختلف حسب الرؤية.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+  // ===== إعدادات افتراضية =====
+  const DEFAULTS = {
+    city: "Baghdad",
+    sect: "sunni",
+    // بما إنك قلت: السني اليوم 7 والشيعي اليوم 6 -> شيعي أقل بيوم
+    offsetSunni: 0,
+    offsetShia: -1,
+    manualOffset: 0
+  };
+
+  const $ = (id) => document.getElementById(id);
+
+  function setStatus(text){ $("statusPill").textContent = text; }
+
+  function loadSettings(){
+    const saved = JSON.parse(localStorage.getItem("hb_ramadan_settings") || "null");
+    const s = saved || DEFAULTS;
+
+    $("city").value = s.city || DEFAULTS.city;
+    $("sect").value = s.sect || DEFAULTS.sect;
+    $("offset").value = String(s.manualOffset ?? DEFAULTS.manualOffset);
+
+    // تاريخ اختياري
+    if (saved?.date) $("date").value = saved.date;
+  }
+
+  function saveSettings(){
+    const data = {
+      city: $("city").value,
+      sect: $("sect").value,
+      manualOffset: parseInt($("offset").value,10) || 0,
+      date: $("date").value || ""
+    };
+    localStorage.setItem("hb_ramadan_settings", JSON.stringify(data));
+    setStatus("تم الحفظ ✅");
+    setTimeout(()=>setStatus("جاهز"), 1200);
+  }
+
+  function getSelectedDate(){
+    const v = $("date").value;
+    if (v) return new Date(v + "T00:00:00");
+    const now = new Date();
+    return new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  }
+
+  // هجري من المتصفح (تقريبي) + نضيف Offset لليوم من رمضان فقط
+  function getIslamicParts(date){
+    // نستخدم تقويم اسلامي (قد يختلف عن الرؤية)
+    const fmt = new Intl.DateTimeFormat("ar-IQ-u-ca-islamic", {
+      day:"numeric", month:"numeric", year:"numeric"
+    });
+    const parts = fmt.formatToParts(date);
+    const get = (t) => parts.find(p=>p.type===t)?.value;
+    // قد تكون الأرقام عربية، نحولها للأرقام الإنكليزية
+    const toEn = (s) => String(s).replace(/[٠-٩]/g, d => "٠١٢٣٤٥٦٧٨٩".indexOf(d)).replace(/[۰-۹]/g, d => "۰۱۲۳۴۵۶۷۸۹".indexOf(d));
+    return {
+      day: parseInt(toEn(get("day")),10),
+      month: parseInt(toEn(get("month")),10), // رمضان عادة 9
+      year: parseInt(toEn(get("year")),10),
+      rawText: fmt.format(date)
+    };
+  }
+
+  function formatGregorian(date){
+    return new Intl.DateTimeFormat("ar-IQ", { weekday:"long", year:"numeric", month:"long", day:"numeric" }).format(date);
+  }
+
+  function getRamadanDay(isl, sect, manualOffset){
+    // رمضان شهر 9 في التقويم الإسلامي الحسابي
+    if (isl.month !== 9) return null;
+
+    const sectOffset = (sect === "shia") ? DEFAULTS.offsetShia : DEFAULTS.offsetSunni;
+    const d = isl.day + sectOffset + (manualOffset || 0);
+    return d;
+  }
+
+  async function fetchTimings(date, city, sect){
+    // API مجاني: AlAdhan timingsByCity
+    // نستخدم method افتراضي، وإذا تريد نضيف اختيار method لاحقاً
+    // method=4 (شائع) لكن تقدر تغييره بسهولة
+    const d = String(date.getDate()).padStart(2,"0");
+    const m = String(date.getMonth()+1).padStart(2,"0");
+    const y = String(date.getFullYear());
+
+    // ملاحظة: بعض الجهات تفضّل طرق مختلفة؛ نخليها ثابتة الآن وبعدين نخليها خيار
+    const method = 4;
+
+    const url = `https://api.aladhan.com/v1/timingsByCity/${d}-${m}-${y}?city=${encodeURIComponent(city)}&country=Iraq&method=${method}`;
+
+    const res = await fetch(url);
+    if(!res.ok) throw new Error("API error");
+    const json = await res.json();
+    if(!json?.data?.timings) throw new Error("Bad response");
+
+    // نأخذ المواقيت الأساسية
+    const t = json.data.timings;
+
+    // بعض الردود فيها ثواني أو timezone، نخليها HH:MM
+    const clean = (v) => String(v).slice(0,5);
+
+    return {
+      imsak: clean(t.Imsak || t.Fajr),
+      fajr: clean(t.Fajr),
+      sunrise: clean(t.Sunrise),
+      dhuhr: clean(t.Dhuhr),
+      asr: clean(t.Asr),
+      maghrib: clean(t.Maghrib),
+      isha: clean(t.Isha)
+    };
+  }
+
+  async function render(){
+    setStatus("يتم التحديث…");
+
+    const date = getSelectedDate();
+    const city = $("city").value;
+    const sect = $("sect").value;
+    const manualOffset = parseInt($("offset").value,10) || 0;
+
+    // نصوص التاريخ
+    const isl = getIslamicParts(date);
+    const ramDay = getRamadanDay(isl, sect, manualOffset);
+
+    const line1 = ramDay
+      ? `اليوم ${ramDay} رمضان ${isl.year} هـ (${sect === "shia" ? "الوقف الشيعي" : "الوقف السني"})`
+      : `ليس ضمن شهر رمضان حالياً (حسب التقويم الحسابي)`;
+
+    $("line1").textContent = line1;
+    $("hijriLine").textContent = isl.rawText;
+    $("gregLine").textContent = formatGregorian(date);
+
+    // مواقيت
+    try{
+      const timings = await fetchTimings(date, city, sect);
+      $("imsak").textContent   = timings.imsak;
+      $("fajr").textContent    = timings.fajr;
+      $("sunrise").textContent = timings.sunrise;
+      $("dhuhr").textContent   = timings.dhuhr;
+      $("asr").textContent     = timings.asr;
+      $("maghrib").textContent = timings.maghrib;
+      $("isha").textContent    = timings.isha;
+
+      setStatus("تم ✅");
+      setTimeout(()=>setStatus("جاهز"), 1200);
+    }catch(e){
+      $("imsak").textContent   = "—";
+      $("fajr").textContent    = "—";
+      $("sunrise").textContent = "—";
+      $("dhuhr").textContent   = "—";
+      $("asr").textContent     = "—";
+      $("maghrib").textContent = "—";
+      $("isha").textContent    = "—";
+      setStatus("تعذر جلب المواقيت");
+    }
+  }
+
+  // خريطة: حالياً نص، وإذا توفر رابط Google Maps نضعه هنا
+  $("mapBtn").addEventListener("click", (e)=>{
+    e.preventDefault();
+    alert("الموقع: اليرموك – 4 شوارع\nإذا ترسل رابط Google Maps أضيفه كزر يفتح الخرائط مباشرة.");
+  });
+
+  $("btnSave").addEventListener("click", ()=>{ saveSettings(); render(); });
+  $("btnRefresh").addEventListener("click", render);
+  $("city").addEventListener("change", render);
+  $("sect").addEventListener("change", render);
+  $("offset").addEventListener("change", render);
+  $("date").addEventListener("change", render);
+
+  loadSettings();
+  render();
+</script>
 </body>
 </html>
