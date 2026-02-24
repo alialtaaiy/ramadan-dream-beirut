@@ -4,12 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>تقويم رمضان — حلم بيروت</title>
+  <link rel="icon" href="logo.png">
 
   <style>
     :root{
       --bg:#071826;
       --card:#0e2a3f;
-      --card2:#0b2234;
       --gold:#f5c400;
       --text:#eaf2ff;
       --muted:#b9c7da;
@@ -28,19 +28,33 @@
     .top{
       display:flex; align-items:center; justify-content:space-between;
       gap:14px; margin-bottom: 16px;
+      flex-wrap: wrap;
     }
-    .brand{
-      display:flex; align-items:center; gap:14px;
-    }
+    .brand{ display:flex; align-items:center; gap:14px; }
     .logo{
-      width:56px; height:56px; border-radius:14px;
+      width:72px; height:72px; border-radius:16px;
       background: linear-gradient(135deg, rgba(245,196,0,.25), rgba(255,255,255,.06));
       display:flex; align-items:center; justify-content:center;
       overflow:hidden; border:1px solid var(--line);
+      flex: 0 0 auto;
     }
     .logo img{ width:100%; height:100%; object-fit:cover; display:block; }
     .title h1{ margin:0; font-size: 26px; color: var(--gold); letter-spacing:.2px; }
     .title p{ margin:6px 0 0; color: var(--muted); font-size: 14px; }
+
+    .actions{
+      display:flex; gap:10px; align-items:center; flex-wrap: wrap;
+    }
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(245,196,0,.12);
+      border: 1px solid rgba(245,196,0,.30);
+      color: var(--gold);
+      font-size: 12px;
+      white-space:nowrap;
+    }
 
     .grid{
       display:grid;
@@ -69,6 +83,7 @@
       display:flex; align-items:center; gap:8px;
     }
     .cardBody{ padding: 16px; }
+
     .row{
       display:grid;
       grid-template-columns: 1fr 1fr;
@@ -90,6 +105,7 @@
       font-size: 14px;
     }
     input[type="number"]{ direction:ltr; text-align:left; }
+
     .hint{ font-size: 12px; color: var(--muted); margin-top: 6px; line-height:1.5; }
 
     .big{
@@ -101,7 +117,7 @@
       gap: 8px;
     }
     .big .k{ color: var(--muted); font-size: 12px; }
-    .big .v{ font-size: 18px; font-weight: 700; }
+    .big .v{ font-size: 18px; font-weight: 800; }
     .big .vGold{ color: var(--gold); }
 
     .times{
@@ -120,14 +136,14 @@
       padding: 12px;
     }
     .t .name{ color: var(--muted); font-size: 12px; }
-    .t .val{ font-size: 16px; font-weight: 700; margin-top: 6px; }
+    .t .val{ font-size: 16px; font-weight: 800; margin-top: 6px; }
 
-    .btns{ display:grid; gap:10px; margin-top: 10px; }
+    .btns{ display:grid; gap:10px; margin-top: 12px; }
     .btn{
       display:block; text-decoration:none;
       background: var(--gold);
       color:#071826;
-      font-weight: 800;
+      font-weight: 900;
       border-radius: 14px;
       padding: 12px;
       text-align:center;
@@ -137,22 +153,35 @@
       background: rgba(245,196,0,.12);
       color: var(--gold);
       border: 1px solid rgba(245,196,0,.35);
+      font-weight: 800;
     }
+
     .footerNote{
       margin-top: 12px;
       font-size: 12px;
       color: var(--muted);
       line-height:1.6;
     }
-    .pill{
-      display:inline-flex; align-items:center; gap:8px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: rgba(245,196,0,.12);
-      border: 1px solid rgba(245,196,0,.30);
-      color: var(--gold);
-      font-size: 12px;
-      white-space:nowrap;
+
+    /* نافذة الإعدادات */
+    .modalWrap{
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.55);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding: 16px;
+      z-index: 999;
+    }
+    .modal{
+      width: min(920px, 100%);
+      max-height: 90vh;
+      overflow:auto;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(14,42,63,.98), rgba(7,24,38,.98));
+      box-shadow: var(--shadow);
     }
   </style>
 </head>
@@ -162,73 +191,28 @@
     <div class="top">
       <div class="brand">
         <div class="logo" title="شعار المطعم">
-          <!-- ارفع صورة باسم logo.png داخل نفس الريبو ليظهر الشعار تلقائياً -->
-          <img src="logo.png" alt="Logo" onerror="this.remove(); this.parentElement.textContent='HB'; this.parentElement.style.color='#f5c400'; this.parentElement.style.fontWeight='800';"/>
+          <img src="logo.png" alt="Logo"
+               onerror="this.remove(); this.parentElement.textContent='HB'; this.parentElement.style.color='#f5c400'; this.parentElement.style.fontWeight='900';"/>
         </div>
         <div class="title">
           <h1>تقويم رمضان — حلم بيروت</h1>
           <p>مذاق بيروت الأصيل بأطباق فاخرة وأجواء تأخذك إلى البحر المتوسط • الدوام 24 ساعة</p>
         </div>
       </div>
-      <div class="pill" id="statusPill">جاهز</div>
+
+      <div class="actions">
+        <button id="toggleSettings" class="btn secondary" style="width:auto;padding:10px 12px;">⚙️ الإعدادات</button>
+        <button id="btnRefreshTop" class="btn secondary" style="width:auto;padding:10px 12px;">تحديث</button>
+        <div class="pill" id="statusPill">جاهز</div>
+      </div>
     </div>
 
     <div class="grid">
-      <!-- الإعدادات -->
-      <div class="card">
-        <div class="cardHeader">
-          <h2>⚙️ الإعدادات</h2>
-          <button id="btnSave" class="btn secondary" style="width:auto;padding:10px 12px;">حفظ</button>
-        </div>
-        <div class="cardBody">
-          <div class="row">
-            <div>
-              <label>المحافظة</label>
-              <select id="city">
-                <option value="Baghdad">بغداد</option>
-                <option value="Basra">البصرة</option>
-              </select>
-              <div class="hint">حاليًا المناطق: “جميع المناطق”. لاحقًا نضيف مناطق تفصيلية.</div>
-            </div>
-
-            <div>
-              <label>المذهب</label>
-              <select id="sect">
-                <option value="sunni">الوقف السني</option>
-                <option value="shia">الوقف الشيعي</option>
-              </select>
-              <div class="hint">قد يختلف بدء الشهر حسب الجهة الشرعية.</div>
-            </div>
-
-            <div>
-              <label>تصحيح يوم رمضان (±1)</label>
-              <select id="offset">
-                <option value="0">0 (بدون تصحيح)</option>
-                <option value="1">+1 يوم</option>
-                <option value="-1">-1 يوم</option>
-              </select>
-              <div class="hint">إذا كان عندك: السني اليوم 7 والشيعي اليوم 6، خلّي الشيعي -1 (افتراضي).</div>
-            </div>
-
-            <div>
-              <label>اختر تاريخ (اختياري)</label>
-              <input id="date" type="date"/>
-              <div class="hint">إذا خليته فارغ، يعتمد على تاريخ اليوم تلقائياً.</div>
-            </div>
-          </div>
-
-          <div class="footerNote">
-            ✅ المواقيت يتم جلبها تلقائياً من API مجاني.  
-            إذا تغيّر المصدر/الطريقة نقدر نخليها خيار أيضاً.
-          </div>
-        </div>
-      </div>
-
-      <!-- عرض اليوم والمواقيت -->
+      <!-- اليوم والمواقيت -->
       <div class="card">
         <div class="cardHeader">
           <h2>🕌 اليوم والمواقيت</h2>
-          <button id="btnRefresh" class="btn secondary" style="width:auto;padding:10px 12px;">تحديث</button>
+          <button id="btnToday" class="btn secondary" style="width:auto;padding:10px 12px;">اليوم</button>
         </div>
         <div class="cardBody">
           <div class="big">
@@ -240,7 +224,7 @@
             <div class="v" id="gregLine">—</div>
           </div>
 
-          <div class="times" id="times">
+          <div class="times">
             <div class="t"><div class="name">الإمساك</div><div class="val" id="imsak">—</div></div>
             <div class="t"><div class="name">الفجر</div><div class="val" id="fajr">—</div></div>
             <div class="t"><div class="name">الشروق</div><div class="val" id="sunrise">—</div></div>
@@ -259,37 +243,107 @@
           </div>
 
           <div class="footerNote">
-            ملاحظة: حساب “اليوم من رمضان” يعتمد على التقويم الهجري في المتصفح + خيار التصحيح، وقد يختلف حسب الرؤية.
+            ملاحظة: قد تختلف بداية الشهر حسب الجهة الشرعية. لذلك يوجد خيار “تصحيح ±1”.
+          </div>
+        </div>
+      </div>
+
+      <!-- بطاقة صغيرة للمساعدة -->
+      <div class="card">
+        <div class="cardHeader">
+          <h2>ℹ️ معلومات</h2>
+        </div>
+        <div class="cardBody">
+          <div class="footerNote">
+            • المواقيت يتم جلبها تلقائياً لمدينة بغداد/البصرة من مصدر مجاني. <br>
+            • عند تبديل الوقف السني/الشيعي يتم تغيير “تاريخ العرض” نفسه، لذلك يتغير الهجري والميلادي والمواقيت بشكل متطابق. <br>
+            • إذا عندك رابط Google Maps الحقيقي للموقع، أرسله وأضعه بدل التنبيه.
+          </div>
+          <div class="footerNote" style="margin-top:14px;">
+            تريد إضافة: تقويم 30 يوم مثل المثال + دعاء اليوم + باركود داخل الصفحة؟ قولي وأضيفها.
           </div>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- نافذة الإعدادات (مخفية افتراضياً) -->
+  <div class="modalWrap" id="settingsModal" aria-hidden="true">
+    <div class="modal card">
+      <div class="cardHeader">
+        <h2>⚙️ الإعدادات</h2>
+        <div style="display:flex; gap:10px;">
+          <button id="btnSave" class="btn secondary" style="width:auto;padding:10px 12px;">حفظ</button>
+          <button id="btnClose" class="btn secondary" style="width:auto;padding:10px 12px;">إغلاق</button>
+        </div>
+      </div>
+      <div class="cardBody">
+        <div class="row">
+          <div>
+            <label>المحافظة</label>
+            <select id="city">
+              <option value="Baghdad">بغداد</option>
+              <option value="Basra">البصرة</option>
+            </select>
+            <div class="hint">حاليًا المناطق: “جميع المناطق”. لاحقًا نضيف مناطق تفصيلية.</div>
+          </div>
+
+          <div>
+            <label>المذهب</label>
+            <select id="sect">
+              <option value="sunni">الوقف السني</option>
+              <option value="shia">الوقف الشيعي</option>
+            </select>
+            <div class="hint">بالوضع الطبيعي عندك: السني يسبق الشيعي بيوم (السني 7 والشيعي 6).</div>
+          </div>
+
+          <div>
+            <label>تصحيح (±1 يوم)</label>
+            <select id="offset">
+              <option value="0">0 (بدون تصحيح)</option>
+              <option value="1">+1 يوم</option>
+              <option value="-1">-1 يوم</option>
+            </select>
+            <div class="hint">التصحيح يغيّر تاريخ العرض، وبالتالي يغيّر الهجري + الميلادي + المواقيت معاً.</div>
+          </div>
+
+          <div>
+            <label>اختر تاريخ (اختياري)</label>
+            <input id="date" type="date"/>
+            <div class="hint">إذا خليته فارغ، يعتمد على تاريخ اليوم تلقائياً.</div>
+          </div>
+        </div>
+
+        <div class="footerNote">
+          ✅ الافتراضي: بغداد. (أول مرة) ثم يحفظ آخر اختيار تلقائياً. <br>
+          ✅ إذا تريد “دائماً بغداد” قلّي وأعدّلها لك.
+        </div>
+      </div>
+    </div>
+  </div>
+
 <script>
-  // ===== إعدادات افتراضية =====
+  const $ = (id) => document.getElementById(id);
+
   const DEFAULTS = {
     city: "Baghdad",
     sect: "sunni",
-    // بما إنك قلت: السني اليوم 7 والشيعي اليوم 6 -> شيعي أقل بيوم
-    offsetSunni: 0,
-    offsetShia: -1,
+    // حسب وصفك: الشيعي أقل بيوم عادةً
+    sectOffsetSunni: 0,
+    sectOffsetShia: -1,
     manualOffset: 0
   };
-
-  const $ = (id) => document.getElementById(id);
 
   function setStatus(text){ $("statusPill").textContent = text; }
 
   function loadSettings(){
     const saved = JSON.parse(localStorage.getItem("hb_ramadan_settings") || "null");
-    const s = saved || DEFAULTS;
 
-    $("city").value = s.city || DEFAULTS.city;
-    $("sect").value = s.sect || DEFAULTS.sect;
-    $("offset").value = String(s.manualOffset ?? DEFAULTS.manualOffset);
+    // بغداد افتراضي (أول مرة)، وبعدها يرجع آخر اختيار محفوظ
+    $("city").value = (saved && saved.city) ? saved.city : DEFAULTS.city;
 
-    // تاريخ اختياري
+    $("sect").value = (saved && saved.sect) ? saved.sect : DEFAULTS.sect;
+    $("offset").value = String((saved && typeof saved.manualOffset === "number") ? saved.manualOffset : DEFAULTS.manualOffset);
     if (saved?.date) $("date").value = saved.date;
   }
 
@@ -305,26 +359,41 @@
     setTimeout(()=>setStatus("جاهز"), 1200);
   }
 
-  function getSelectedDate(){
+  function getBaseDate(){
     const v = $("date").value;
     if (v) return new Date(v + "T00:00:00");
     const now = new Date();
     return new Date(now.getFullYear(), now.getMonth(), now.getDate());
   }
 
-  // هجري من المتصفح (تقريبي) + نضيف Offset لليوم من رمضان فقط
+  function addDays(date, days){
+    const d = new Date(date);
+    d.setDate(d.getDate() + days);
+    return d;
+  }
+
+  // تاريخ العرض يتغير مع الوقف + التصحيح
+  function getDisplayDate(){
+    const base = getBaseDate();
+    const sect = $("sect").value;
+    const manualOffset = parseInt($("offset").value,10) || 0;
+    const sectOffset = (sect === "shia") ? DEFAULTS.sectOffsetShia : DEFAULTS.sectOffsetSunni;
+    return addDays(base, sectOffset + manualOffset);
+  }
+
   function getIslamicParts(date){
-    // نستخدم تقويم اسلامي (قد يختلف عن الرؤية)
     const fmt = new Intl.DateTimeFormat("ar-IQ-u-ca-islamic", {
       day:"numeric", month:"numeric", year:"numeric"
     });
     const parts = fmt.formatToParts(date);
     const get = (t) => parts.find(p=>p.type===t)?.value;
-    // قد تكون الأرقام عربية، نحولها للأرقام الإنكليزية
-    const toEn = (s) => String(s).replace(/[٠-٩]/g, d => "٠١٢٣٤٥٦٧٨٩".indexOf(d)).replace(/[۰-۹]/g, d => "۰۱۲۳۴۵۶۷۸۹".indexOf(d));
+    const toEn = (s) => String(s)
+      .replace(/[٠-٩]/g, d => "٠١٢٣٤٥٦٧٨٩".indexOf(d))
+      .replace(/[۰-۹]/g, d => "۰۱۲۳۴۵۶۷۸۹".indexOf(d));
+
     return {
       day: parseInt(toEn(get("day")),10),
-      month: parseInt(toEn(get("month")),10), // رمضان عادة 9
+      month: parseInt(toEn(get("month")),10),
       year: parseInt(toEn(get("year")),10),
       rawText: fmt.format(date)
     };
@@ -334,39 +403,24 @@
     return new Intl.DateTimeFormat("ar-IQ", { weekday:"long", year:"numeric", month:"long", day:"numeric" }).format(date);
   }
 
-  function getRamadanDay(isl, sect, manualOffset){
-    // رمضان شهر 9 في التقويم الإسلامي الحسابي
+  // اليوم من رمضان (فقط إذا الشهر رمضان = 9)
+  function getRamadanDay(isl){
     if (isl.month !== 9) return null;
-
-    const sectOffset = (sect === "shia") ? DEFAULTS.offsetShia : DEFAULTS.offsetSunni;
-    const d = isl.day + sectOffset + (manualOffset || 0);
-    return d;
+    return isl.day; // بما إن displayDate تغيّر، اليوم يطابق الوقف فعلاً
   }
 
-  async function fetchTimings(date, city, sect){
-    // API مجاني: AlAdhan timingsByCity
-    // نستخدم method افتراضي، وإذا تريد نضيف اختيار method لاحقاً
-    // method=4 (شائع) لكن تقدر تغييره بسهولة
+  async function fetchTimings(date, city){
     const d = String(date.getDate()).padStart(2,"0");
     const m = String(date.getMonth()+1).padStart(2,"0");
     const y = String(date.getFullYear());
-
-    // ملاحظة: بعض الجهات تفضّل طرق مختلفة؛ نخليها ثابتة الآن وبعدين نخليها خيار
     const method = 4;
-
     const url = `https://api.aladhan.com/v1/timingsByCity/${d}-${m}-${y}?city=${encodeURIComponent(city)}&country=Iraq&method=${method}`;
-
     const res = await fetch(url);
     if(!res.ok) throw new Error("API error");
     const json = await res.json();
     if(!json?.data?.timings) throw new Error("Bad response");
-
-    // نأخذ المواقيت الأساسية
     const t = json.data.timings;
-
-    // بعض الردود فيها ثواني أو timezone، نخليها HH:MM
     const clean = (v) => String(v).slice(0,5);
-
     return {
       imsak: clean(t.Imsak || t.Fajr),
       fajr: clean(t.Fajr),
@@ -381,26 +435,24 @@
   async function render(){
     setStatus("يتم التحديث…");
 
-    const date = getSelectedDate();
+    const date = getDisplayDate();
     const city = $("city").value;
     const sect = $("sect").value;
-    const manualOffset = parseInt($("offset").value,10) || 0;
 
-    // نصوص التاريخ
     const isl = getIslamicParts(date);
-    const ramDay = getRamadanDay(isl, sect, manualOffset);
+    const ramDay = getRamadanDay(isl);
 
+    const sectLabel = (sect === "shia") ? "الوقف الشيعي" : "الوقف السني";
     const line1 = ramDay
-      ? `اليوم ${ramDay} رمضان ${isl.year} هـ (${sect === "shia" ? "الوقف الشيعي" : "الوقف السني"})`
+      ? `اليوم ${ramDay} رمضان ${isl.year} هـ (${sectLabel})`
       : `ليس ضمن شهر رمضان حالياً (حسب التقويم الحسابي)`;
 
     $("line1").textContent = line1;
     $("hijriLine").textContent = isl.rawText;
     $("gregLine").textContent = formatGregorian(date);
 
-    // مواقيت
     try{
-      const timings = await fetchTimings(date, city, sect);
+      const timings = await fetchTimings(date, city);
       $("imsak").textContent   = timings.imsak;
       $("fajr").textContent    = timings.fajr;
       $("sunrise").textContent = timings.sunrise;
@@ -423,20 +475,45 @@
     }
   }
 
-  // خريطة: حالياً نص، وإذا توفر رابط Google Maps نضعه هنا
+  // خريطة (حالياً تنبيه)
   $("mapBtn").addEventListener("click", (e)=>{
     e.preventDefault();
     alert("الموقع: اليرموك – 4 شوارع\nإذا ترسل رابط Google Maps أضيفه كزر يفتح الخرائط مباشرة.");
   });
 
-  $("btnSave").addEventListener("click", ()=>{ saveSettings(); render(); });
-  $("btnRefresh").addEventListener("click", render);
+  // ===== التحكم في نافذة الإعدادات =====
+  function openSettings(){
+    $("settingsModal").style.display = "flex";
+    $("settingsModal").setAttribute("aria-hidden","false");
+  }
+  function closeSettings(){
+    $("settingsModal").style.display = "none";
+    $("settingsModal").setAttribute("aria-hidden","true");
+  }
+  $("toggleSettings").addEventListener("click", openSettings);
+  $("btnClose").addEventListener("click", closeSettings);
+  $("settingsModal").addEventListener("click", (e)=>{
+    if (e.target === $("settingsModal")) closeSettings();
+  });
+
+  // أزرار
+  $("btnSave").addEventListener("click", ()=>{ saveSettings(); closeSettings(); render(); });
+  $("btnRefreshTop").addEventListener("click", render);
+
+  $("btnToday").addEventListener("click", ()=>{
+    $("date").value = "";
+    saveSettings();
+    render();
+  });
+
+  // تحديث فوري عند تغيير الإعدادات داخل النافذة
   $("city").addEventListener("change", render);
   $("sect").addEventListener("change", render);
   $("offset").addEventListener("change", render);
   $("date").addEventListener("change", render);
 
   loadSettings();
+  closeSettings(); // مخفية افتراضياً
   render();
 </script>
 </body>
