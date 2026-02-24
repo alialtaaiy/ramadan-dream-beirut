@@ -17,39 +17,38 @@
       --shadow: 0 18px 50px rgba(0,0,0,.35);
       --radius:18px;
     }
+
     body{
       margin:0;
       font-family: system-ui, -apple-system, Segoe UI, Tahoma, Arial, sans-serif;
       background: radial-gradient(1200px 600px at 50% 0%, #0e3a55 0%, var(--bg) 55%);
       color:var(--text);
-      padding: 22px;
+      padding: 18px;
     }
-    .wrap{ max-width: 980px; margin: 0 auto; }
+    .wrap{ max-width: 1100px; margin: 0 auto; }
+
     .top{
       display:flex; align-items:center; justify-content:space-between;
-      gap:14px; margin-bottom: 16px;
-      flex-wrap: wrap;
+      gap:14px; margin-bottom: 14px; flex-wrap: wrap;
     }
     .brand{ display:flex; align-items:center; gap:14px; }
     .logo{
-      width:72px; height:72px; border-radius:16px;
+      width:74px; height:74px; border-radius:18px;
       background: linear-gradient(135deg, rgba(245,196,0,.25), rgba(255,255,255,.06));
       display:flex; align-items:center; justify-content:center;
       overflow:hidden; border:1px solid var(--line);
       flex: 0 0 auto;
     }
     .logo img{ width:100%; height:100%; object-fit:cover; display:block; }
-    .title h1{ margin:0; font-size: 26px; color: var(--gold); letter-spacing:.2px; }
+    .title h1{ margin:0; font-size: 26px; color: var(--gold); }
     .title p{ margin:6px 0 0; color: var(--muted); font-size: 14px; }
 
-    .actions{
-      display:flex; gap:10px; align-items:center; flex-wrap: wrap;
-    }
+    .actions{ display:flex; gap:10px; align-items:center; flex-wrap: wrap; }
     .pill{
       display:inline-flex; align-items:center; gap:8px;
-      padding: 6px 10px;
+      padding: 7px 11px;
       border-radius: 999px;
-      background: rgba(245,196,0,.12);
+      background: rgba(245,196,0,.10);
       border: 1px solid rgba(245,196,0,.30);
       color: var(--gold);
       font-size: 12px;
@@ -58,10 +57,10 @@
 
     .grid{
       display:grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap: 16px;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 14px;
     }
-    @media (max-width: 900px){
+    @media (max-width: 980px){
       .grid{ grid-template-columns: 1fr; }
     }
 
@@ -84,40 +83,16 @@
     }
     .cardBody{ padding: 16px; }
 
-    .row{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-    @media (max-width: 520px){
-      .row{ grid-template-columns: 1fr; }
-    }
-
-    label{ display:block; font-size: 13px; color: var(--muted); margin-bottom: 6px; }
-    select, input, button{
-      width:100%;
-      padding: 12px 12px;
-      border-radius: 12px;
-      border: 1px solid var(--line);
-      background: rgba(0,0,0,.22);
-      color: var(--text);
-      outline:none;
-      font-size: 14px;
-    }
-    input[type="number"]{ direction:ltr; text-align:left; }
-
-    .hint{ font-size: 12px; color: var(--muted); margin-top: 6px; line-height:1.5; }
-
     .big{
-      background: linear-gradient(180deg, rgba(245,196,0,.16), rgba(0,0,0,.20));
-      border: 1px solid rgba(245,196,0,.35);
+      background: linear-gradient(180deg, rgba(245,196,0,.14), rgba(0,0,0,.20));
+      border: 1px solid rgba(245,196,0,.30);
       border-radius: 16px;
       padding: 14px;
       display:grid;
       gap: 8px;
     }
     .big .k{ color: var(--muted); font-size: 12px; }
-    .big .v{ font-size: 18px; font-weight: 800; }
+    .big .v{ font-size: 18px; font-weight: 900; }
     .big .vGold{ color: var(--gold); }
 
     .times{
@@ -136,41 +111,99 @@
       padding: 12px;
     }
     .t .name{ color: var(--muted); font-size: 12px; }
-    .t .val{ font-size: 16px; font-weight: 800; margin-top: 6px; }
+    .t .val{ font-size: 16px; font-weight: 900; margin-top: 6px; direction:ltr; text-align:left; }
+
+    .btn{
+      width:auto;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(245,196,0,.35);
+      background: rgba(245,196,0,.10);
+      color: var(--gold);
+      font-weight: 900;
+      cursor:pointer;
+      user-select:none;
+    }
+    .btn:hover{ background: rgba(245,196,0,.14); }
 
     .btns{ display:grid; gap:10px; margin-top: 12px; }
-    .btn{
-      display:block; text-decoration:none;
-      background: var(--gold);
-      color:#071826;
-      font-weight: 900;
-      border-radius: 14px;
+    .linkBtn{
+      display:flex; align-items:center; justify-content:center; gap:10px;
       padding: 12px;
-      text-align:center;
-      border: 0;
-    }
-    .btn.secondary{
-      background: rgba(245,196,0,.12);
-      color: var(--gold);
+      border-radius: 16px;
+      text-decoration:none;
+      font-weight: 900;
       border: 1px solid rgba(245,196,0,.35);
-      font-weight: 800;
+      background: rgba(0,0,0,.22);
+      color: var(--gold);
+      transition: transform .08s ease;
+    }
+    .linkBtn:active{ transform: scale(.99); }
+    .icon{
+      width:30px; height:30px; display:grid; place-items:center;
+      border-radius: 12px;
+      background: rgba(245,196,0,.12);
+      border: 1px solid rgba(245,196,0,.30);
+      font-weight: 900;
+    }
+    .linkBtn.primary{
+      background: linear-gradient(180deg, rgba(245,196,0,.20), rgba(0,0,0,.22));
     }
 
-    .footerNote{
+    /* دعاء اليوم */
+    .dua{
+      background: rgba(0,0,0,.22);
+      border: 1px solid rgba(245,196,0,.25);
+      border-radius: 16px;
+      padding: 14px;
       margin-top: 12px;
-      font-size: 12px;
-      color: var(--muted);
-      line-height:1.6;
+      line-height: 1.9;
+      text-align:right;
     }
+    .dua .hd{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      margin-bottom: 10px;
+    }
+    .dua .hd .t{ color: var(--gold); font-weight: 900; }
+    .dua .text{ color: var(--text); font-weight: 650; font-size: 14px; }
+    .dua .src{ color: var(--muted); font-size: 12px; margin-top: 8px; }
+
+    /* صور المطعم (سلايدر متحرك) */
+    .marquee{
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      overflow:hidden;
+      background: rgba(0,0,0,.18);
+      padding: 10px;
+    }
+    .track{
+      display:flex;
+      gap: 10px;
+      width: max-content;
+      animation: scroll 26s linear infinite;
+    }
+    .marquee:hover .track{ animation-play-state: paused; }
+    @keyframes scroll{
+      from{ transform: translateX(0); }
+      to{ transform: translateX(-50%); }
+    }
+    .pic{
+      width: 220px;
+      height: 125px;
+      border-radius: 14px;
+      overflow:hidden;
+      border: 1px solid rgba(245,196,0,.18);
+      box-shadow: 0 10px 22px rgba(0,0,0,.25);
+      flex: 0 0 auto;
+    }
+    .pic img{ width:100%; height:100%; object-fit:cover; display:block; }
 
     /* نافذة الإعدادات */
     .modalWrap{
-      position: fixed;
-      inset: 0;
+      position: fixed; inset: 0;
       background: rgba(0,0,0,.55);
       display:none;
-      align-items:center;
-      justify-content:center;
+      align-items:center; justify-content:center;
       padding: 16px;
       z-index: 999;
     }
@@ -183,6 +216,26 @@
       background: linear-gradient(180deg, rgba(14,42,63,.98), rgba(7,24,38,.98));
       box-shadow: var(--shadow);
     }
+    .row{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 520px){
+      .row{ grid-template-columns: 1fr; }
+    }
+    label{ display:block; font-size: 13px; color: var(--muted); margin-bottom: 6px; text-align:right; }
+    select, input{
+      width:100%;
+      padding: 12px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: rgba(0,0,0,.22);
+      color: var(--text);
+      outline:none;
+      font-size: 14px;
+    }
+    .hint{ font-size: 12px; color: var(--muted); margin-top: 6px; line-height:1.5; text-align:right; }
   </style>
 </head>
 
@@ -190,9 +243,8 @@
   <div class="wrap">
     <div class="top">
       <div class="brand">
-        <div class="logo" title="شعار المطعم">
-          <img src="logo.png" alt="Logo"
-               onerror="this.remove(); this.parentElement.textContent='HB'; this.parentElement.style.color='#f5c400'; this.parentElement.style.fontWeight='900';"/>
+        <div class="logo">
+          <img src="logo.png" alt="Logo" />
         </div>
         <div class="title">
           <h1>تقويم رمضان — حلم بيروت</h1>
@@ -201,8 +253,9 @@
       </div>
 
       <div class="actions">
-        <button id="toggleSettings" class="btn secondary" style="width:auto;padding:10px 12px;">⚙️ الإعدادات</button>
-        <button id="btnRefreshTop" class="btn secondary" style="width:auto;padding:10px 12px;">تحديث</button>
+        <button id="toggleSettings" class="btn">⚙️ الإعدادات</button>
+        <button id="btnToday" class="btn">اليوم</button>
+        <button id="btnRefreshTop" class="btn">تحديث</button>
         <div class="pill" id="statusPill">جاهز</div>
       </div>
     </div>
@@ -212,7 +265,7 @@
       <div class="card">
         <div class="cardHeader">
           <h2>🕌 اليوم والمواقيت</h2>
-          <button id="btnToday" class="btn secondary" style="width:auto;padding:10px 12px;">اليوم</button>
+          <div class="pill" id="cityPill">بغداد</div>
         </div>
         <div class="cardBody">
           <div class="big">
@@ -234,47 +287,55 @@
             <div class="t"><div class="name">العشاء</div><div class="val" id="isha">—</div></div>
           </div>
 
-          <div class="btns">
-            <a class="btn" href="https://www.facebook.com/helemrest/" target="_blank" rel="noopener">Facebook</a>
-            <a class="btn" href="https://www.instagram.com/helem.rest?igsh=bHU3azE0dGdseGVv" target="_blank" rel="noopener">Instagram</a>
-            <a class="btn" href="https://wa.me/9647701111722" target="_blank" rel="noopener">📞 واتساب: +964 770 111 1722</a>
-            <a class="btn" href="https://wa.me/9647801111722" target="_blank" rel="noopener">📞 واتساب: +964 780 111 1722</a>
-            <a class="btn secondary" href="#" id="mapBtn">📍 الموقع: اليرموك – 4 شوارع</a>
+          <!-- دعاء اليوم -->
+          <div class="dua">
+            <div class="hd">
+              <div class="t">🤲 دعاء اليوم</div>
+              <div class="pill" id="duaDayPill">—</div>
+            </div>
+            <div class="text" id="duaText">—</div>
+            <div class="src">يتغير تلقائياً يومياً</div>
           </div>
 
-          <div class="footerNote">
-            ملاحظة: قد تختلف بداية الشهر حسب الجهة الشرعية. لذلك يوجد خيار “تصحيح ±1”.
+          <div class="btns">
+            <a class="linkBtn primary" href="https://www.facebook.com/helemrest/" target="_blank" rel="noopener">
+              <span class="icon">f</span> Facebook
+            </a>
+            <a class="linkBtn" href="https://www.instagram.com/helem.rest?igsh=bHU3azE0dGdseGVv" target="_blank" rel="noopener">
+              <span class="icon">⌁</span> Instagram
+            </a>
+            <a class="linkBtn" href="https://wa.me/9647701111722" target="_blank" rel="noopener">
+              <span class="icon">✆</span> واتساب: +964 770 111 1722
+            </a>
           </div>
         </div>
       </div>
 
-      <!-- بطاقة صغيرة للمساعدة -->
+      <!-- صور المطعم -->
       <div class="card">
         <div class="cardHeader">
-          <h2>ℹ️ معلومات</h2>
+          <h2>🍽️ صور من المطعم</h2>
         </div>
         <div class="cardBody">
-          <div class="footerNote">
-            • المواقيت يتم جلبها تلقائياً لمدينة بغداد/البصرة من مصدر مجاني. <br>
-            • عند تبديل الوقف السني/الشيعي يتم تغيير “تاريخ العرض” نفسه، لذلك يتغير الهجري والميلادي والمواقيت بشكل متطابق. <br>
-            • إذا عندك رابط Google Maps الحقيقي للموقع، أرسله وأضعه بدل التنبيه.
+          <div class="marquee">
+            <div class="track" id="imgTrack"></div>
           </div>
-          <div class="footerNote" style="margin-top:14px;">
-            تريد إضافة: تقويم 30 يوم مثل المثال + دعاء اليوم + باركود داخل الصفحة؟ قولي وأضيفها.
+          <div class="hint" style="margin-top:10px;">
+            الصور تُقرأ من: images/1.jpg, images/2.jpg, images/3.jpg, images/4.jpg (تقدر تزيد لاحقاً)
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- نافذة الإعدادات (مخفية افتراضياً) -->
+  <!-- الإعدادات -->
   <div class="modalWrap" id="settingsModal" aria-hidden="true">
     <div class="modal card">
       <div class="cardHeader">
         <h2>⚙️ الإعدادات</h2>
         <div style="display:flex; gap:10px;">
-          <button id="btnSave" class="btn secondary" style="width:auto;padding:10px 12px;">حفظ</button>
-          <button id="btnClose" class="btn secondary" style="width:auto;padding:10px 12px;">إغلاق</button>
+          <button id="btnSave" class="btn">حفظ</button>
+          <button id="btnClose" class="btn">إغلاق</button>
         </div>
       </div>
       <div class="cardBody">
@@ -285,7 +346,7 @@
               <option value="Baghdad">بغداد</option>
               <option value="Basra">البصرة</option>
             </select>
-            <div class="hint">حاليًا المناطق: “جميع المناطق”. لاحقًا نضيف مناطق تفصيلية.</div>
+            <div class="hint">الافتراضي: بغداد (أول مرة) ثم يحفظ آخر اختيار.</div>
           </div>
 
           <div>
@@ -294,7 +355,7 @@
               <option value="sunni">الوقف السني</option>
               <option value="shia">الوقف الشيعي</option>
             </select>
-            <div class="hint">بالوضع الطبيعي عندك: السني يسبق الشيعي بيوم (السني 7 والشيعي 6).</div>
+            <div class="hint">عندك عادةً: السني يسبق الشيعي بيوم.</div>
           </div>
 
           <div>
@@ -304,19 +365,13 @@
               <option value="1">+1 يوم</option>
               <option value="-1">-1 يوم</option>
             </select>
-            <div class="hint">التصحيح يغيّر تاريخ العرض، وبالتالي يغيّر الهجري + الميلادي + المواقيت معاً.</div>
           </div>
 
           <div>
             <label>اختر تاريخ (اختياري)</label>
             <input id="date" type="date"/>
-            <div class="hint">إذا خليته فارغ، يعتمد على تاريخ اليوم تلقائياً.</div>
+            <div class="hint">إذا فارغ، يعتمد على تاريخ اليوم تلقائياً.</div>
           </div>
-        </div>
-
-        <div class="footerNote">
-          ✅ الافتراضي: بغداد. (أول مرة) ثم يحفظ آخر اختيار تلقائياً. <br>
-          ✅ إذا تريد “دائماً بغداد” قلّي وأعدّلها لك.
         </div>
       </div>
     </div>
@@ -328,20 +383,16 @@
   const DEFAULTS = {
     city: "Baghdad",
     sect: "sunni",
-    // حسب وصفك: الشيعي أقل بيوم عادةً
     sectOffsetSunni: 0,
     sectOffsetShia: -1,
     manualOffset: 0
   };
 
-  function setStatus(text){ $("statusPill").textContent = text; }
+  function setStatus(t){ $("statusPill").textContent = t; }
 
   function loadSettings(){
     const saved = JSON.parse(localStorage.getItem("hb_ramadan_settings") || "null");
-
-    // بغداد افتراضي (أول مرة)، وبعدها يرجع آخر اختيار محفوظ
     $("city").value = (saved && saved.city) ? saved.city : DEFAULTS.city;
-
     $("sect").value = (saved && saved.sect) ? saved.sect : DEFAULTS.sect;
     $("offset").value = String((saved && typeof saved.manualOffset === "number") ? saved.manualOffset : DEFAULTS.manualOffset);
     if (saved?.date) $("date").value = saved.date;
@@ -355,8 +406,6 @@
       date: $("date").value || ""
     };
     localStorage.setItem("hb_ramadan_settings", JSON.stringify(data));
-    setStatus("تم الحفظ ✅");
-    setTimeout(()=>setStatus("جاهز"), 1200);
   }
 
   function getBaseDate(){
@@ -365,14 +414,11 @@
     const now = new Date();
     return new Date(now.getFullYear(), now.getMonth(), now.getDate());
   }
-
   function addDays(date, days){
     const d = new Date(date);
     d.setDate(d.getDate() + days);
     return d;
   }
-
-  // تاريخ العرض يتغير مع الوقف + التصحيح
   function getDisplayDate(){
     const base = getBaseDate();
     const sect = $("sect").value;
@@ -382,15 +428,12 @@
   }
 
   function getIslamicParts(date){
-    const fmt = new Intl.DateTimeFormat("ar-IQ-u-ca-islamic", {
-      day:"numeric", month:"numeric", year:"numeric"
-    });
+    const fmt = new Intl.DateTimeFormat("ar-IQ-u-ca-islamic", { day:"numeric", month:"numeric", year:"numeric" });
     const parts = fmt.formatToParts(date);
     const get = (t) => parts.find(p=>p.type===t)?.value;
     const toEn = (s) => String(s)
       .replace(/[٠-٩]/g, d => "٠١٢٣٤٥٦٧٨٩".indexOf(d))
       .replace(/[۰-۹]/g, d => "۰۱۲۳۴۵۶۷۸۹".indexOf(d));
-
     return {
       day: parseInt(toEn(get("day")),10),
       month: parseInt(toEn(get("month")),10),
@@ -402,24 +445,30 @@
   function formatGregorian(date){
     return new Intl.DateTimeFormat("ar-IQ", { weekday:"long", year:"numeric", month:"long", day:"numeric" }).format(date);
   }
-
-  // اليوم من رمضان (فقط إذا الشهر رمضان = 9)
   function getRamadanDay(isl){
     if (isl.month !== 9) return null;
-    return isl.day; // بما إن displayDate تغيّر، اليوم يطابق الوقف فعلاً
+    return isl.day;
+  }
+
+  function toAmPm(hhmm){
+    if (!hhmm || hhmm === "—") return "—";
+    const m = String(hhmm).match(/^(\d{1,2}):(\d{2})/);
+    if(!m) return hhmm;
+    let h = parseInt(m[1],10);
+    const min = m[2];
+    const ampm = (h >= 12) ? "PM" : "AM";
+    h = h % 12; if (h === 0) h = 12;
+    return `${h}:${min} ${ampm}`;
   }
 
   async function fetchTimings(date, city){
     const d = String(date.getDate()).padStart(2,"0");
     const m = String(date.getMonth()+1).padStart(2,"0");
     const y = String(date.getFullYear());
-    const method = 4;
-    const url = `https://api.aladhan.com/v1/timingsByCity/${d}-${m}-${y}?city=${encodeURIComponent(city)}&country=Iraq&method=${method}`;
+    const url = `https://api.aladhan.com/v1/timingsByCity/${d}-${m}-${y}?city=${encodeURIComponent(city)}&country=Iraq&method=4`;
     const res = await fetch(url);
-    if(!res.ok) throw new Error("API error");
     const json = await res.json();
-    if(!json?.data?.timings) throw new Error("Bad response");
-    const t = json.data.timings;
+    const t = json?.data?.timings;
     const clean = (v) => String(v).slice(0,5);
     return {
       imsak: clean(t.Imsak || t.Fajr),
@@ -432,6 +481,38 @@
     };
   }
 
+  const DUAS = [
+    "اللهم اجعلنا في هذا اليوم من المقبولين، واغفر لنا وارحمنا برحمتك يا أرحم الراحمين.",
+    "اللهم ارزقنا صدق التوبة، وصفاء القلب، وحسن الخاتمة، وبارك لنا في أعمالنا.",
+    "اللهم اجعل هذا اليوم فرجاً لكل مهموم، وشفاءً لكل مريض، ورزقاً واسعاً لنا ولأهلنا.",
+    "اللهم اجعلنا من أهل القرآن، ووفقنا لقيام الليل، واغسل قلوبنا من كل همّ وحزن.",
+    "اللهم تقبل صيامنا وقيامنا، واهدنا لأحسن الأخلاق لا يهدي لأحسنها إلا أنت.",
+    "اللهم ارزقنا بركة الوقت، ونور البصيرة، وراحة البال، وسعة الرزق.",
+    "اللهم اجعل لنا في هذا اليوم دعوة لا تُرد، وافتح لنا أبواب الخير من حيث لا نحتسب.",
+    "اللهم احفظ أهلنا وأولادنا وبلدنا، وأدم علينا الأمن والعافية والستر."
+  ];
+  function getDuaForDay(ramDay){
+    const key = ramDay ? ramDay : (new Date().getDate());
+    return DUAS[(key - 1) % DUAS.length];
+  }
+
+  function buildImageMarquee(){
+    const imgs = ["images/1.jpg","images/2.jpg","images/3.jpg","images/4.jpg"];
+    const track = $("imgTrack");
+    track.innerHTML = "";
+    const full = imgs.concat(imgs);
+    full.forEach(src=>{
+      const div = document.createElement("div");
+      div.className = "pic";
+      const img = document.createElement("img");
+      img.src = src;
+      img.alt = "حلم بيروت";
+      img.onerror = ()=> div.style.display="none";
+      div.appendChild(img);
+      track.appendChild(div);
+    });
+  }
+
   async function render(){
     setStatus("يتم التحديث…");
 
@@ -439,49 +520,40 @@
     const city = $("city").value;
     const sect = $("sect").value;
 
+    $("cityPill").textContent = (city === "Basra") ? "البصرة" : "بغداد";
+
     const isl = getIslamicParts(date);
     const ramDay = getRamadanDay(isl);
 
     const sectLabel = (sect === "shia") ? "الوقف الشيعي" : "الوقف السني";
-    const line1 = ramDay
+    $("line1").textContent = ramDay
       ? `اليوم ${ramDay} رمضان ${isl.year} هـ (${sectLabel})`
-      : `ليس ضمن شهر رمضان حالياً (حسب التقويم الحسابي)`;
+      : `التاريخ الحالي (حسب ${sectLabel})`;
 
-    $("line1").textContent = line1;
     $("hijriLine").textContent = isl.rawText;
     $("gregLine").textContent = formatGregorian(date);
 
+    $("duaDayPill").textContent = ramDay ? `اليوم ${ramDay}` : "اليوم";
+    $("duaText").textContent = getDuaForDay(ramDay);
+
     try{
-      const timings = await fetchTimings(date, city);
-      $("imsak").textContent   = timings.imsak;
-      $("fajr").textContent    = timings.fajr;
-      $("sunrise").textContent = timings.sunrise;
-      $("dhuhr").textContent   = timings.dhuhr;
-      $("asr").textContent     = timings.asr;
-      $("maghrib").textContent = timings.maghrib;
-      $("isha").textContent    = timings.isha;
+      const t = await fetchTimings(date, city);
+      $("imsak").textContent   = toAmPm(t.imsak);
+      $("fajr").textContent    = toAmPm(t.fajr);
+      $("sunrise").textContent = toAmPm(t.sunrise);
+      $("dhuhr").textContent   = toAmPm(t.dhuhr);
+      $("asr").textContent     = toAmPm(t.asr);
+      $("maghrib").textContent = toAmPm(t.maghrib);
+      $("isha").textContent    = toAmPm(t.isha);
 
       setStatus("تم ✅");
       setTimeout(()=>setStatus("جاهز"), 1200);
     }catch(e){
-      $("imsak").textContent   = "—";
-      $("fajr").textContent    = "—";
-      $("sunrise").textContent = "—";
-      $("dhuhr").textContent   = "—";
-      $("asr").textContent     = "—";
-      $("maghrib").textContent = "—";
-      $("isha").textContent    = "—";
+      ["imsak","fajr","sunrise","dhuhr","asr","maghrib","isha"].forEach(id=> $(id).textContent="—");
       setStatus("تعذر جلب المواقيت");
     }
   }
 
-  // خريطة (حالياً تنبيه)
-  $("mapBtn").addEventListener("click", (e)=>{
-    e.preventDefault();
-    alert("الموقع: اليرموك – 4 شوارع\nإذا ترسل رابط Google Maps أضيفه كزر يفتح الخرائط مباشرة.");
-  });
-
-  // ===== التحكم في نافذة الإعدادات =====
   function openSettings(){
     $("settingsModal").style.display = "flex";
     $("settingsModal").setAttribute("aria-hidden","false");
@@ -490,30 +562,25 @@
     $("settingsModal").style.display = "none";
     $("settingsModal").setAttribute("aria-hidden","true");
   }
+
   $("toggleSettings").addEventListener("click", openSettings);
   $("btnClose").addEventListener("click", closeSettings);
   $("settingsModal").addEventListener("click", (e)=>{
     if (e.target === $("settingsModal")) closeSettings();
   });
 
-  // أزرار
-  $("btnSave").addEventListener("click", ()=>{ saveSettings(); closeSettings(); render(); });
+  $("btnSave").addEventListener("click", ()=>{ saveSettings(); closeSettings(); render(); setStatus("تم الحفظ ✅"); });
   $("btnRefreshTop").addEventListener("click", render);
+  $("btnToday").addEventListener("click", ()=>{ $("date").value=""; saveSettings(); render(); });
 
-  $("btnToday").addEventListener("click", ()=>{
-    $("date").value = "";
-    saveSettings();
-    render();
-  });
-
-  // تحديث فوري عند تغيير الإعدادات داخل النافذة
   $("city").addEventListener("change", render);
   $("sect").addEventListener("change", render);
   $("offset").addEventListener("change", render);
   $("date").addEventListener("change", render);
 
   loadSettings();
-  closeSettings(); // مخفية افتراضياً
+  closeSettings();
+  buildImageMarquee();
   render();
 </script>
 </body>
