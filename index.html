@@ -3,439 +3,413 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>تقويم رمضان — حلم بيروت</title>
-
+  <title>تقويم رمضان – حلم بيروت</title>
   <style>
     :root{
       --bg:#071826;
       --panel:rgba(255,255,255,.06);
       --panel2:rgba(255,255,255,.09);
       --line:rgba(255,255,255,.12);
-      --text:#eaf2ff;
-      --muted:#b9c7da;
+      --text:#eef6ff;
+      --muted:#b6c7d6;
       --gold:#f5c400;
-      --gold2:#ffdf55;
-      --shadow:0 18px 50px rgba(0,0,0,.35);
-      --radius:18px;
+      --gold2:#ffdd55;
+      --shadow:0 18px 55px rgba(0,0,0,.35);
+      --radius:20px;
     }
-
     *{box-sizing:border-box}
     body{
       margin:0;
-      background: radial-gradient(1200px 600px at 15% 0%, rgba(245,196,0,.12), transparent 55%),
-                  radial-gradient(900px 500px at 85% 10%, rgba(245,196,0,.08), transparent 55%),
+      font-family: system-ui, -apple-system, "Segoe UI", Tahoma, Arial, sans-serif;
+      background: radial-gradient(900px 600px at 15% 10%, rgba(245,196,0,.10), transparent 60%),
+                  radial-gradient(900px 600px at 90% 15%, rgba(0,255,255,.06), transparent 65%),
                   var(--bg);
       color:var(--text);
-      font-family: Arial, sans-serif;
+      min-height:100vh;
     }
-
+    a{color:inherit}
     .wrap{
-      max-width:1180px;
-      margin: 22px auto 40px;
-      padding: 0 14px;
-      animation: fadeIn .55s ease both;
+      max-width:1100px;
+      margin:0 auto;
+      padding:18px 14px 26px;
     }
-
-    @keyframes fadeIn{
-      from{opacity:0; transform: translateY(8px)}
-      to{opacity:1; transform: translateY(0)}
-    }
-
-    .topbar{
+    header{
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:12px;
       margin-bottom:14px;
     }
-
     .brand{
       display:flex;
       align-items:center;
       gap:12px;
-      min-width: 220px;
+      min-width:0;
     }
     .logo{
-      width:54px;
-      height:54px;
-      border-radius:16px;
-      overflow:hidden;
-      background: rgba(255,255,255,.04);
+      width:56px;height:56px;border-radius:16px;
+      background:rgba(255,255,255,.06);
       border:1px solid rgba(245,196,0,.25);
-      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+      box-shadow:0 12px 30px rgba(0,0,0,.25);
+      overflow:hidden;
       flex:0 0 auto;
     }
-    .logo img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:block;
-    }
-    .titleBox h1{
+    .logo img{width:100%;height:100%;object-fit:cover;display:block}
+    .titles{min-width:0}
+    .titles h1{
       margin:0;
-      font-size:28px;
+      font-size:22px;
+      line-height:1.2;
       color:var(--gold);
-      letter-spacing:.3px;
+      letter-spacing:.2px;
+      text-shadow:0 0 16px rgba(245,196,0,.18);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
     }
-    .titleBox p{
-      margin:6px 0 0;
+    .titles p{
+      margin:4px 0 0;
       color:var(--muted);
-      font-size:14px;
+      font-size:13.5px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
     }
-
-    .pills{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      flex-wrap:wrap;
-      justify-content:flex-start;
-    }
-    .pill{
-      border:1px solid rgba(245,196,0,.25);
-      background: rgba(255,255,255,.05);
-      padding:8px 12px;
-      border-radius: 999px;
-      color: var(--text);
-      font-size: 13px;
-      box-shadow: 0 12px 34px rgba(0,0,0,.22);
-    }
-    .pill b{color:var(--gold2)}
-    .btn{
-      cursor:pointer;
-      border:none;
-      border-radius:999px;
-      padding:10px 14px;
-      background: rgba(245,196,0,.14);
-      color: var(--gold2);
-      font-weight:800;
-      transition: transform .12s ease, box-shadow .2s ease, background .2s ease;
-      border:1px solid rgba(245,196,0,.28);
-      box-shadow: 0 10px 24px rgba(0,0,0,.22);
-    }
-    .btn:hover{
-      background: rgba(245,196,0,.18);
-      box-shadow: 0 0 0 3px rgba(245,196,0,.08), 0 16px 34px rgba(0,0,0,.28);
-      transform: translateY(-1px);
-    }
-    .btn:active{ transform: translateY(1px) scale(.99); }
 
     .grid{
       display:grid;
-      grid-template-columns: 1.05fr .95fr;
+      grid-template-columns: 1.08fr .92fr;
       gap:14px;
-      margin-top: 14px;
+      align-items:start;
+    }
+    @media (max-width: 920px){
+      .grid{grid-template-columns:1fr}
     }
 
     .card{
-      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.04));
       border:1px solid var(--line);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
       overflow:hidden;
     }
     .cardHead{
       display:flex;
       align-items:center;
       justify-content:space-between;
-      padding:14px 16px;
-      border-bottom: 1px solid rgba(255,255,255,.08);
+      gap:10px;
+      padding:14px 14px 10px;
+      border-bottom:1px solid rgba(255,255,255,.08);
     }
     .cardHead h2{
       margin:0;
-      font-size:18px;
-      color: var(--gold2);
-    }
-
-    .cardBody{ padding: 14px 16px 16px; }
-
-    .bigDate{
-      border-radius: 16px;
-      padding: 16px;
-      background: rgba(0,0,0,.18);
-      border: 1px solid rgba(245,196,0,.16);
-      margin-bottom: 12px;
-    }
-    .bigDate .line1{ color: var(--muted); font-size: 13px; margin:0 0 6px; }
-    .bigDate .hijri{ font-size: 20px; font-weight: 900; margin:0 0 6px; }
-    .bigDate .greg{ color: var(--muted); margin:0; font-weight:700; }
-
-    .times{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:10px;
-      margin-top: 10px;
-    }
-    .tbox{
-      background: rgba(0,0,0,.18);
-      border:1px solid rgba(255,255,255,.08);
-      border-radius: 16px;
-      padding: 12px;
-      text-align:center;
-    }
-    .tbox .lbl{ color: var(--muted); font-size: 12px; margin-bottom: 6px; }
-    .tbox .val{ font-size: 18px; font-weight: 900; color: var(--text); }
-
-    .duaBox{
-      margin-top: 12px;
-      border-radius: 16px;
-      padding: 14px 14px 12px;
-      background: rgba(0,0,0,.18);
-      border:1px solid rgba(245,196,0,.16);
-      position:relative;
-    }
-    .duaTop{
+      font-size:16px;
+      color:var(--gold);
       display:flex;
       align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      margin-bottom: 8px;
+      gap:8px;
     }
-    .duaTop .pillSmall{
+    .pill{
+      padding:7px 10px;
+      border-radius:999px;
+      border:1px solid rgba(245,196,0,.28);
+      background:rgba(245,196,0,.10);
+      color:var(--gold2);
+      font-size:12px;
+      user-select:none;
+    }
+    .bodyPad{padding:14px}
+
+    .todayBox{
+      background:linear-gradient(135deg, rgba(245,196,0,.09), rgba(255,255,255,.03));
       border:1px solid rgba(245,196,0,.22);
-      background: rgba(245,196,0,.08);
-      color: var(--gold2);
-      border-radius: 999px;
-      padding: 6px 10px;
-      font-weight: 900;
-      font-size: 12px;
+      border-radius:18px;
+      padding:14px;
+      margin-bottom:12px;
+    }
+    .todayTitle{
+      margin:0 0 6px;
+      font-size:15px;
+      font-weight:800;
+    }
+    .todayLine{
+      margin:4px 0;
+      color:var(--muted);
+      font-size:13.5px;
+    }
+    .todayLine strong{color:var(--text)}
+    .bigHijri{
+      margin:8px 0 0;
+      font-size:17px;
+      font-weight:900;
+      color:var(--gold2);
+    }
+
+    .timesGrid{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap:10px;
+    }
+    @media (max-width:520px){
+      .timesGrid{grid-template-columns: repeat(2, minmax(0, 1fr));}
+    }
+    .timeCard{
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:18px;
+      padding:12px 10px;
+      text-align:center;
+      transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+    }
+    .timeCard:hover{
+      transform:translateY(-2px);
+      border-color:rgba(245,196,0,.28);
+      box-shadow:0 12px 35px rgba(0,0,0,.25);
+    }
+    .timeName{
+      color:var(--muted);
+      font-size:12px;
+      margin:0 0 6px;
+    }
+    .timeVal{
+      font-size:18px;
+      font-weight:900;
+      margin:0;
+      letter-spacing:.3px;
+    }
+
+    .duaBox{
+      margin-top:12px;
+      padding:14px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.04);
+      text-align:center;
+    }
+    .duaTitle{
+      margin:0 0 8px;
+      color:var(--gold);
+      font-weight:900;
+      font-size:14px;
     }
     .duaText{
       margin:0;
-      color: var(--text);
-      font-weight: 800;
-      line-height: 1.9;
-      font-size: 14px;
+      color:var(--text);
+      font-size:15px;
+      line-height:1.9;
+      font-weight:700;
     }
 
-    /* ✅ سلايدر صور مستمر */
-    .marqueeWrap{
-      margin-top: 12px;
-      border-radius: 16px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.18);
+    /* ===== Infinite marquee ===== */
+    #marqueeBox{
+      margin-top:12px;
+      border-radius:18px;
+      border:1px solid rgba(245,196,0,.18);
+      background:rgba(255,255,255,.03);
       overflow:hidden;
       position:relative;
     }
-    .marquee{
+    #marqueeTrack{
+      --shift: 700px;
       display:flex;
+      gap:12px;
       align-items:center;
-      gap:12px;
       width:max-content;
-      padding: 10px 12px;
-      animation: scrollX 22s linear infinite;
+      padding:10px 12px;
+      animation: scrollX 26s linear infinite;
+      will-change: transform;
     }
-    .marquee:hover{ animation-play-state: paused; } /* اختياري: يوقف عند hover */
-    .marquee{
-  --shift: 0px;            /* راح ننطيها قيمة من JS */
-  display:flex;
-  align-items:center;
-  gap:12px;
-  width:max-content;
-  padding: 10px 12px;
-  animation: scrollX 22s linear infinite;
-  will-change: transform;
-}
-
-@keyframes scrollX{
-  from{ transform: translateX(0); }
-  to{ transform: translateX(calc(-1 * var(--shift))); }
-}
+    #marqueeBox:hover #marqueeTrack{animation-play-state:paused;}
+    @keyframes scrollX{
+      from{ transform: translateX(0); }
+      to{ transform: translateX(calc(-1 * var(--shift))); }
+    }
     .pic{
-      width: 190px;
-      height: 95px;
-      border-radius: 14px;
+      height:120px;
+      width:200px;
+      border-radius:16px;
       overflow:hidden;
-      border:1px solid rgba(245,196,0,.18);
-      box-shadow: 0 10px 30px rgba(0,0,0,.25);
-      flex: 0 0 auto;
-      background: rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.18);
+      box-shadow:0 10px 28px rgba(0,0,0,.22);
+      flex:0 0 auto;
     }
-    .pic img{ width:100%; height:100%; object-fit:cover; display:block; }
-
-    .noImages{
-      padding: 12px 14px;
-      color: var(--muted);
-      font-weight: 700;
+    @media (max-width:520px){
+      .pic{height:92px;width:160px}
+    }
+    .pic img{
+      width:100%;height:100%;
+      object-fit:cover;
+      display:block;
+      transform:scale(1.02);
+      transition:transform .35s ease;
+    }
+    .pic:hover img{transform:scale(1.08);}
+    #noImagesBox{
+      padding:14px 12px;
       text-align:center;
+      color:var(--muted);
       display:none;
+      font-size:13px;
     }
 
-    /* أيقونات السوشيال */
+    /* Social icons row (circles) */
     .socialRow{
+      margin-top:14px;
       display:flex;
-      gap:12px;
       justify-content:center;
-      padding: 16px 0 6px;
-      margin-top: 6px;
+      gap:12px;
+      flex-wrap:wrap;
+      opacity:0;
+      transform: translateY(8px);
+      animation: fadeIn .7s ease forwards;
+      animation-delay:.15s;
     }
+    @keyframes fadeIn{to{opacity:1; transform: translateY(0);}}
     .socialIcon{
-      width: 54px;
-      height: 54px;
-      border-radius: 999px;
+      width:52px;height:52px;
+      border-radius:999px;
       display:grid;
       place-items:center;
-      text-decoration:none;
-      color: var(--gold2);
-      background: rgba(0,0,0,.22);
-      border:1px solid rgba(245,196,0,.25);
-      box-shadow: 0 14px 34px rgba(0,0,0,.26);
-      transform: translateY(0);
-      transition: transform .14s ease, box-shadow .2s ease, background .2s ease, filter .2s ease;
-      animation: fadeIn .55s ease both;
+      border:1px solid rgba(245,196,0,.26);
+      background:rgba(245,196,0,.08);
+      color:var(--gold2);
+      box-shadow: 0 0 0 rgba(245,196,0,0);
+      transition: transform .18s ease, box-shadow .22s ease, background .22s ease, border-color .22s ease;
+      -webkit-tap-highlight-color: transparent;
+      outline:none;
     }
     .socialIcon:hover{
-      background: rgba(245,196,0,.10);
-      box-shadow: 0 0 0 3px rgba(245,196,0,.08), 0 18px 44px rgba(0,0,0,.32);
-      filter: drop-shadow(0 0 14px rgba(245,196,0,.35));
-      transform: translateY(-2px);
+      transform: translateY(-2px) scale(1.03);
+      border-color: rgba(245,196,0,.42);
+      box-shadow: 0 0 18px rgba(245,196,0,.22), 0 10px 26px rgba(0,0,0,.22);
+      background:rgba(245,196,0,.12);
     }
     .socialIcon:active{
-      transform: translateY(1px) scale(.98);
+      transform: translateY(0) scale(.97);
+      box-shadow: 0 0 10px rgba(245,196,0,.16);
     }
 
-    .bless{
-      margin-top: 14px;
-      text-align:center;
-      font-weight: 900;
-      font-size: 16px;
-      line-height: 2;
-      color: var(--text);
-    }
-
-    /* Settings modal */
-    .modalWrap{
-      position: fixed;
-      inset:0;
-      display:none;
-      align-items:center;
-      justify-content:center;
-      padding:14px;
-      background: rgba(0,0,0,.55);
-      z-index: 999;
-    }
-    .modal{
-      width:min(560px, 100%);
-      border-radius: 18px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(7,24,38,.98);
-      box-shadow: 0 30px 80px rgba(0,0,0,.6);
-      overflow:hidden;
-    }
-    .modal .mHead{
+    .btnRow{
       display:flex;
-      align-items:center;
-      justify-content:space-between;
-      padding: 14px 16px;
-      border-bottom:1px solid rgba(255,255,255,.10);
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-start;
+      margin-top:10px;
     }
-    .modal .mHead h3{ margin:0; color: var(--gold2); }
-    .modal .mBody{ padding: 14px 16px 16px; }
-    .row{
+    .btn{
+      cursor:pointer;
+      border:1px solid rgba(245,196,0,.26);
+      background:rgba(245,196,0,.10);
+      color:var(--gold2);
+      padding:10px 12px;
+      border-radius:14px;
+      font-weight:800;
+      font-size:13px;
+      transition: transform .18s ease, box-shadow .22s ease, background .22s ease;
+    }
+    .btn:hover{transform: translateY(-1px); box-shadow:0 12px 30px rgba(0,0,0,.25); background:rgba(245,196,0,.14);}
+    .btn:active{transform: scale(.98);}
+
+    .fieldRow{
       display:grid;
       grid-template-columns: 1fr 1fr;
       gap:10px;
-      margin-bottom: 10px;
-    }
-    label{ font-size: 12px; color: var(--muted); font-weight: 800; display:block; margin-bottom: 6px; }
-    select,input{
-      width:100%;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.06);
-      color: var(--text);
-      padding: 11px 12px;
-      outline:none;
-      font-weight: 800;
-    }
-    .mActions{
-      display:flex;
-      gap:10px;
-      justify-content:flex-end;
-      margin-top: 10px;
-    }
-
-    /* responsive */
-    @media (max-width: 980px){
-      .grid{ grid-template-columns: 1fr; }
-      .titleBox h1{ font-size: 24px; }
-      .times{ grid-template-columns: repeat(2, 1fr); }
-      .pic{ width: 170px; height: 90px; }
     }
     @media (max-width: 520px){
-      .times{ grid-template-columns: 1fr 1fr; }
-      .pic{ width: 150px; height: 82px; }
-      .socialIcon{ width: 50px; height: 50px; }
-      .row{ grid-template-columns: 1fr; }
+      .fieldRow{grid-template-columns:1fr}
+    }
+    label{
+      display:block;
+      font-size:12px;
+      color:var(--muted);
+      margin-bottom:6px;
+    }
+    select{
+      width:100%;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.05);
+      color:var(--text);
+      outline:none;
+    }
+    select:focus{border-color:rgba(245,196,0,.35); box-shadow:0 0 0 3px rgba(245,196,0,.10);}
+
+    .note{
+      margin-top:10px;
+      color:var(--muted);
+      font-size:12.5px;
+      line-height:1.7;
+    }
+
+    footer{
+      margin-top:14px;
+      text-align:center;
+      color:var(--text);
+      font-weight:900;
+      font-size:16px;
+      line-height:1.9;
     }
   </style>
 </head>
-
 <body>
   <div class="wrap">
-
-    <div class="topbar">
+    <header>
       <div class="brand">
         <div class="logo">
           <img src="images/logo.png" alt="حلم بيروت" onerror="this.style.display='none'">
         </div>
-        <div class="titleBox">
+        <div class="titles">
           <h1>تقويم رمضان — حلم بيروت</h1>
-          <p>مذاق بيروت الأصيل بأطباق فاخرة — الدوام 24 ساعة</p>
+          <p>مذاق بيروت الأصيل بأطباق فاخرة وأجواء تأخذك إلى البحر المتوسط · الدوام 24 ساعة</p>
         </div>
       </div>
-
-      <div class="pills">
-        <div class="pill">المحافظة: <b id="cityPill">بغداد</b></div>
-        <div class="pill">الحالة: <b id="statusPill">جاهز</b></div>
-        <button class="btn" id="btnRefreshTop">تحديث</button>
-        <button class="btn" id="toggleSettings">الإعدادات</button>
-      </div>
-    </div>
+      <div class="pill" id="statusPill">جاهز</div>
+    </header>
 
     <div class="grid">
-      <!-- يسار: اليوم والمواقيت -->
+      <!-- LEFT: Today + timings + dua + marquee + socials -->
       <section class="card">
         <div class="cardHead">
-          <h2>اليوم والمواقيت</h2>
-          <span class="pill">AM/PM</span>
+          <h2>📅 اليوم والمواقيت</h2>
+          <button class="btn" id="refreshBtn" type="button">تحديث</button>
         </div>
-
-        <div class="cardBody">
-          <div class="bigDate">
-            <p class="line1" id="line1">التاريخ الحالي</p>
-            <p class="hijri" id="hijriLine">—</p>
-            <p class="greg" id="gregLine">—</p>
+        <div class="bodyPad">
+          <div class="todayBox">
+            <p class="todayTitle" id="todayTitle">اليوم</p>
+            <p class="todayLine">التاريخ الهجري: <strong id="hijriText">—</strong></p>
+            <p class="todayLine">التاريخ الميلادي: <strong id="gregText">—</strong></p>
+            <p class="bigHijri" id="ramadanDayText">—</p>
           </div>
 
-          <div class="times">
-            <div class="tbox"><div class="lbl">الإمساك</div><div class="val" id="imsak">—</div></div>
-            <div class="tbox"><div class="lbl">الفجر</div><div class="val" id="fajr">—</div></div>
-            <div class="tbox"><div class="lbl">الشروق</div><div class="val" id="sunrise">—</div></div>
-            <div class="tbox"><div class="lbl">الظهر</div><div class="val" id="dhuhr">—</div></div>
-            <div class="tbox"><div class="lbl">العصر</div><div class="val" id="asr">—</div></div>
-            <div class="tbox"><div class="lbl">المغرب (الإفطار)</div><div class="val" id="maghrib">—</div></div>
-            <div class="tbox"><div class="lbl">العشاء</div><div class="val" id="isha">—</div></div>
+          <div class="timesGrid" aria-label="مواقيت الصلاة والإمساك">
+            <div class="timeCard"><p class="timeName">الإمساك</p><p class="timeVal" id="imsak">—</p></div>
+            <div class="timeCard"><p class="timeName">الفجر</p><p class="timeVal" id="fajr">—</p></div>
+            <div class="timeCard"><p class="timeName">الشروق</p><p class="timeVal" id="sunrise">—</p></div>
+            <div class="timeCard"><p class="timeName">الظهر</p><p class="timeVal" id="dhuhr">—</p></div>
+            <div class="timeCard"><p class="timeName">العصر</p><p class="timeVal" id="asr">—</p></div>
+            <div class="timeCard"><p class="timeName">المغرب (الإفطار)</p><p class="timeVal" id="maghrib">—</p></div>
+            <div class="timeCard"><p class="timeName">العشاء</p><p class="timeVal" id="isha">—</p></div>
           </div>
 
           <div class="duaBox">
-            <div class="duaTop">
-              <span class="pillSmall" id="duaDayPill">دعاء اليوم</span>
-              <span class="pillSmall">📿</span>
-            </div>
+            <p class="duaTitle">🤲 دعاء اليوم</p>
             <p class="duaText" id="duaText">—</p>
           </div>
 
-          <!-- ✅ سلايدر صور مستمر تحت الدعاء -->
-          <div class="marqueeWrap" id="marqueeBox">
-            <div class="marquee" id="marqueeTrack"></div>
-            <div class="noImages" id="noImagesBox">لم يتم العثور على صور داخل مجلد images</div>
+          <!-- Infinite sliding photos (single strip in the center) -->
+          <div id="marqueeBox" aria-label="صور مطعم حلم بيروت">
+            <div id="marqueeTrack"></div>
+            <div id="noImagesBox">لم يتم العثور على صور داخل مجلد <b>images</b>.</div>
           </div>
 
-          <!-- أيقونات التواصل -->
-          <div class="socialRow">
-            <a class="socialIcon" href="https://www.facebook.com/helemrest/" target="_blank" rel="noopener" aria-label="Facebook">
-              <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
-                <path fill="currentColor" d="M13.5 22v-8h2.7l.4-3h-3.1V9.1c0-.9.3-1.5 1.6-1.5H16.7V5c-.3 0-1.4-.1-2.7-.1-2.7 0-4.5 1.6-4.5 4.6V11H7v3h2.5v8h4z"/>
+          <!-- Social icons row -->
+          <div class="socialRow" aria-label="روابط التواصل">
+            <a class="socialIcon" href="https://wa.me/9647701111722" target="_blank" rel="noopener" aria-label="WhatsApp">
+              <svg viewBox="0 0 32 32" width="22" height="22" aria-hidden="true">
+                <path fill="currentColor" d="M19.11 17.59c-.3-.15-1.77-.87-2.04-.97-.27-.1-.47-.15-.66.15-.2.3-.76.97-.93 1.17-.17.2-.34.22-.64.07-.3-.15-1.25-.46-2.38-1.47-.88-.78-1.48-1.75-1.65-2.05-.17-.3-.02-.46.13-.61.13-.13.3-.34.45-.51.15-.17.2-.3.3-.5.1-.2.05-.38-.03-.53-.08-.15-.66-1.6-.9-2.19-.24-.57-.48-.49-.66-.5h-.56c-.2 0-.53.08-.8.38-.27.3-1.05 1.03-1.05 2.5 0 1.47 1.07 2.9 1.22 3.1.15.2 2.1 3.2 5.08 4.49.71.31 1.27.5 1.7.64.71.23 1.36.2 1.87.12.57-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.08-.12-.27-.2-.57-.35z"/>
+                <path fill="currentColor" d="M16.02 3C9.39 3 4 8.39 4 15.02c0 2.11.55 4.17 1.59 5.99L4 29l8.19-1.54a12 12 0 0 0 3.83.62C22.65 28.08 28 22.65 28 16.02 28 9.39 22.65 3 16.02 3zm0 22.03c-1.22 0-2.41-.23-3.54-.68l-.56-.22-4.85.91.92-4.73-.24-.6a9.95 9.95 0 0 1-1.02-4.39c0-5.53 4.5-10.03 10.03-10.03 5.53 0 10.03 4.5 10.03 10.03 0 5.53-4.5 10.03-10.03 10.03z"/>
               </svg>
             </a>
 
@@ -446,228 +420,213 @@
                 <path fill="currentColor" d="M17.75 6.25a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
               </svg>
             </a>
+
+            <a class="socialIcon" href="https://www.facebook.com/helemrest/" target="_blank" rel="noopener" aria-label="Facebook">
+              <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                <path fill="currentColor" d="M13.5 22v-8h2.7l.4-3H13.5V9.1c0-.9.3-1.6 1.6-1.6H16.7V4.9c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3V11H7.5v3H10v8h3.5z"/>
+              </svg>
+            </a>
           </div>
 
-          <div class="bless">
+          <footer>
             تقبل الله منا ومنكم صالح الأعمال<br/>
             كل عام وأنتم بألف خير
-          </div>
+          </footer>
         </div>
       </section>
 
-      <!-- يمين: إعدادات -->
-      <section class="card">
+      <!-- RIGHT: minimal settings (kept but not "big") -->
+      <aside class="card">
         <div class="cardHead">
-          <h2>الإعدادات</h2>
-          <button class="btn" id="btnToday">اليوم</button>
+          <h2>⚙️ الإعدادات</h2>
+          <span class="pill" id="cityPill">بغداد</span>
         </div>
-        <div class="cardBody">
-          <p style="margin:0 0 10px; color:var(--muted); font-weight:800; line-height:1.8">
-            اختر المحافظة والمذهب. عند اختيار <b style="color:var(--gold2)">الوقف الشيعي</b> يتم تأخير المغرب 15 دقيقة (تقريباً للحمرة).
-          </p>
-
-          <div class="row">
+        <div class="bodyPad">
+          <div class="fieldRow">
             <div>
-              <label>المحافظة</label>
-              <select id="city">
-                <option value="Baghdad">بغداد</option>
-                <option value="Basra">البصرة</option>
+              <label for="sectSel">المذهب</label>
+              <select id="sectSel">
+                <option value="sunni">الوقت السني</option>
+                <option value="shia">الوقت الشيعي</option>
               </select>
             </div>
             <div>
-              <label>المذهب</label>
-              <select id="sect">
-                <option value="sunni">الوقف السني</option>
-                <option value="shia">الوقف الشيعي</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="row">
-            <div>
-              <label>اختيار تاريخ (اختياري)</label>
-              <input id="date" type="date" />
-            </div>
-            <div>
-              <label>تصحيح يوم رمضان (يدوي)</label>
-              <select id="offset">
+              <label for="manualOffsetSel">تصحيح يوم رمضان</label>
+              <select id="manualOffsetSel">
                 <option value="0">0 (بدون تصحيح)</option>
                 <option value="1">+1</option>
                 <option value="-1">-1</option>
-                <option value="2">+2</option>
-                <option value="-2">-2</option>
               </select>
             </div>
           </div>
 
-          <div class="mActions">
-            <button class="btn" id="btnSave">حفظ</button>
-            <button class="btn" id="btnClose">إغلاق</button>
+          <div class="btnRow">
+            <button class="btn" id="saveBtn" type="button">حفظ</button>
+            <button class="btn" id="resetBtn" type="button">إعادة ضبط</button>
           </div>
-        </div>
-      </section>
-    </div>
-  </div>
 
-  <!-- Settings modal -->
-  <div class="modalWrap" id="settingsModal" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true">
-      <div class="mHead">
-        <h3>الإعدادات</h3>
-        <button class="btn" id="btnClose2">إغلاق</button>
-      </div>
-      <div class="mBody">
-        <p style="margin:0; color:var(--muted); font-weight:800; line-height:1.8">
-          نفس إعدادات اليمين. (نافذة للهواتف)
-        </p>
-      </div>
+          <p class="note">
+            • المصدر: API AlAdhan لمواقيت الصلاة (حسب طريقة الحساب). citeturn0search0turn0search1<br/>
+            • “الوقت الشيعي” هنا يعتمد طريقة الحساب رقم <b>0</b> (Jafari / Shia Ithna‑Ashari) في AlAdhan. citeturn0search0<br/>
+            • إذا عندك توقيت محلي مختلف (مثل المغرب 6:10 م) استخدم “تصحيح يوم رمضان” أو قلّي المدينة/المنطقة بالضبط حتى نضبط الطريقة.
+          </p>
+        </div>
+      </aside>
     </div>
   </div>
 
   <script>
     const $ = (id) => document.getElementById(id);
 
+    // Build slide list: try both .jpg and .jpeg for each number
+    const SLIDE_IMAGES = [];
+    for (let i = 1; i <= 30; i++) { // supports more if you add
+      SLIDE_IMAGES.push(`images/slide${i}.jpg`);
+      SLIDE_IMAGES.push(`images/slide${i}.jpeg`);
+      SLIDE_IMAGES.push(`images/slide${i}.png`);
+    }
+
+    const STORAGE_KEY = "ramadan_dream_beirut_settings_v1";
+
     const DEFAULTS = {
       city: "Baghdad",
-      sect: "sunni",
-      sectOffsetSunni: 0,
-      sectOffsetShia: -1,
-      manualOffset: 0
+      country: "Iraq",
+      sect: "sunni",     // sunni | shia
+      manualOffset: 0,   // affects Hijri display day only (and Ramadan day)
     };
 
-    function setStatus(t){ const el = $("statusPill"); if(el) el.textContent = t; }
+    function setStatus(t){ $("statusPill").textContent = t; }
 
     function loadSettings(){
-      const saved = JSON.parse(localStorage.getItem("hb_ramadan_settings") || "null");
-      $("city").value = saved?.city ?? DEFAULTS.city;
-      $("sect").value = saved?.sect ?? DEFAULTS.sect;
-      $("offset").value = String(saved?.manualOffset ?? DEFAULTS.manualOffset);
-      if (saved?.date) $("date").value = saved.date;
-    }
-    function saveSettings(){
-      const data = {
-        city: $("city").value,
-        sect: $("sect").value,
-        manualOffset: parseInt($("offset").value,10) || 0,
-        date: $("date").value || ""
-      };
-      localStorage.setItem("hb_ramadan_settings", JSON.stringify(data));
+      try{
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if(!raw) return {...DEFAULTS};
+        const x = JSON.parse(raw);
+        return {...DEFAULTS, ...x};
+      }catch(_){
+        return {...DEFAULTS};
+      }
     }
 
-    function getBaseDate(){
-      const v = $("date").value;
-      if (v) return new Date(v + "T00:00:00");
-      const now = new Date();
-      return new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    }
-    function addDays(date, days){
-      const d = new Date(date);
-      d.setDate(d.getDate() + days);
-      return d;
-    }
-    function getDisplayDate(){
-      const base = getBaseDate();
-      const sect = $("sect").value;
-      const manualOffset = parseInt($("offset").value,10) || 0;
-      const sectOffset = (sect === "shia") ? DEFAULTS.sectOffsetShia : DEFAULTS.sectOffsetSunni;
-      return addDays(base, sectOffset + manualOffset);
+    function saveSettings(s){
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(s));
     }
 
     function toAmPm(hhmm){
-      if (!hhmm || hhmm === "—") return "—";
-      const m = String(hhmm).match(/^(\d{1,2}):(\d{2})/);
+      // input like "17:55"
+      if(!hhmm || typeof hhmm !== "string") return "—";
+      const m = hhmm.match(/^(\d{1,2}):(\d{2})/);
       if(!m) return hhmm;
       let h = parseInt(m[1],10);
       const min = m[2];
       const ampm = (h >= 12) ? "PM" : "AM";
-      h = h % 12; if (h === 0) h = 12;
-      return `${h}:${min} ${ampm}`;
+      h = h % 12;
+      if(h === 0) h = 12;
+      const hh = String(h).padStart(2,"0");
+      return `${hh}:${min} ${ampm}`;
     }
 
-    function addMinutes(hhmm, mins){
-      const m = String(hhmm).match(/^(\d{1,2}):(\d{2})/);
-      if(!m) return hhmm;
-      let h = parseInt(m[1],10), mm = parseInt(m[2],10);
-      let total = h*60 + mm + mins;
-      total = (total + 1440) % 1440;
-      const nh = String(Math.floor(total/60)).padStart(2,"0");
-      const nm = String(total%60).padStart(2,"0");
-      return `${nh}:${nm}`;
+    function fmtGreg(d){
+      // Arabic locale with weekday
+      try{
+        return new Intl.DateTimeFormat("ar-IQ", {weekday:"long", year:"numeric", month:"long", day:"numeric"}).format(d);
+      }catch(_){
+        return d.toLocaleDateString();
+      }
     }
 
-    async function fetchTimingsAndDates(date, city){
-      const d = String(date.getDate()).padStart(2,"0");
-      const m = String(date.getMonth()+1).padStart(2,"0");
-      const y = String(date.getFullYear());
+    function fmtHijri(d){
+      // Islamic calendar via Intl
+      try{
+        // ar-SA-u-ca-islamic gives islamic date
+        return new Intl.DateTimeFormat("ar-SA-u-ca-islamic", {weekday:"long", year:"numeric", month:"long", day:"numeric"}).format(d);
+      }catch(_){
+        return "—";
+      }
+    }
 
-      const url = `https://api.aladhan.com/v1/timingsByCity/${d}-${m}-${y}?city=${encodeURIComponent(city)}&country=Iraq&method=4`;
-      const res = await fetch(url, { cache: "no-store" });
-      const json = await res.json();
-      const data = json?.data;
-      const t = data?.timings || {};
-      const clean = (v) => String(v || "").slice(0,5);
+    function hijriParts(d){
+      // return {day, monthName, year} in Arabic if possible
+      try{
+        const parts = new Intl.DateTimeFormat("ar-SA-u-ca-islamic", {day:"numeric", month:"long", year:"numeric"}).formatToParts(d);
+        const get = (type)=> parts.find(p=>p.type===type)?.value;
+        return { day: get("day"), month: get("month"), year: get("year") };
+      }catch(_){
+        return { day:null, month:null, year:null };
+      }
+    }
 
-      const hijri = data?.date?.hijri;
-      const greg  = data?.date?.gregorian;
+    function setDuaForToday(s){
+      // Simple daily rotating duaa list
+      const DUAS = [
+        "اللهم اجعل صيامنا فيه صيام الصائمين وقيامنا فيه قيام القائمين.",
+        "اللهم اغفر لنا ذنوبنا، واصلح لنا شأننا كله، ولا تكلنا إلى أنفسنا طرفة عين.",
+        "اللهم ارزقنا في هذا الشهر الإخلاص والقبول، وبلغنا ليلة القدر.",
+        "اللهم اجعل لنا من كل همٍ فرجاً ومن كل ضيقٍ مخرجاً.",
+        "اللهم اجعل هذا اليوم فتحاً وخيراً وبركةً علينا وعلى أهلنا."
+      ];
+      const now = new Date();
+      const idx = (now.getFullYear()*10000 + (now.getMonth()+1)*100 + now.getDate()) % DUAS.length;
+      $("duaText").textContent = DUAS[idx];
+    }
 
-      const hijriText = hijri
-        ? `${hijri.day} ${hijri.month?.ar || hijri.month?.en || ""} ${hijri.year} هـ`
-        : "—";
-
-      const gregText = greg
-        ? `${greg.day} ${greg.month?.en || ""} ${greg.year}`
-        : "—";
-
+    async function fetchTimings(city, country, sect){
+      // AlAdhan timingsByCity endpoint (free, no key)
+      const method = (sect === "shia") ? 0 : 3; // 0 = Jafari/Shia, 3 = Muslim World League citeturn0search0
+      const url = `https://api.aladhan.com/v1/timingsByCity?city=${encodeURIComponent(city)}&country=${encodeURIComponent(country)}&method=${method}`;
+      const res = await fetch(url, {cache:"no-store"});
+      if(!res.ok) throw new Error("API error");
+      const js = await res.json();
+      if(!js || js.code !== 200) throw new Error("Bad response");
+      const t = js.data.timings;
+      // Normalize keys
       return {
-        timings: {
-          imsak: clean(t.Imsak || t.Fajr),
-          fajr: clean(t.Fajr),
-          sunrise: clean(t.Sunrise),
-          dhuhr: clean(t.Dhuhr),
-          asr: clean(t.Asr),
-          maghrib: clean(t.Maghrib),
-          isha: clean(t.Isha),
-        },
-        hijriText,
-        gregText
+        imsak: t.Imsak,
+        fajr: t.Fajr,
+        sunrise: t.Sunrise,
+        dhuhr: t.Dhuhr,
+        asr: t.Asr,
+        maghrib: t.Maghrib,
+        isha: t.Isha
       };
     }
 
-    const DUAS = [
-      "اللهم اجعلنا في هذا اليوم من المقبولين، واغفر لنا وارحمنا برحمتك يا أرحم الراحمين.",
-      "اللهم ارزقنا صدق التوبة وصفاء القلب وحسن الخاتمة، وبارك لنا في أعمالنا.",
-      "اللهم اجعل هذا اليوم فرجاً لكل مهموم وشفاءً لكل مريض ورزقاً واسعاً لنا ولأهلنا.",
-      "اللهم اجعلنا من أهل القرآن ووفقنا لقيام الليل واغسل قلوبنا من كل همّ وحزن.",
-      "اللهم تقبل صيامنا وقيامنا واهدنا لأحسن الأخلاق لا يهدي لأحسنها إلا أنت.",
-      "اللهم ارزقنا بركة الوقت ونور البصيرة وراحة البال وسعة الرزق.",
-      "اللهم اجعل لنا في هذا اليوم دعوة لا تُرد وافتح لنا أبواب الخير من حيث لا نحتسب.",
-      "اللهم احفظ أهلنا وأولادنا وبلدنا وأدم علينا الأمن والعافية والستر."
-    ];
-    function getDuaForDay(){
-      const today = new Date();
-      const key = today.getDate();
-      return DUAS[(key - 1) % DUAS.length];
+    function applyTimingToUI(t){
+      $("imsak").textContent   = toAmPm(t.imsak);
+      $("fajr").textContent    = toAmPm(t.fajr);
+      $("sunrise").textContent = toAmPm(t.sunrise);
+      $("dhuhr").textContent   = toAmPm(t.dhuhr);
+      $("asr").textContent     = toAmPm(t.asr);
+      $("maghrib").textContent = toAmPm(t.maghrib);
+      $("isha").textContent    = toAmPm(t.isha);
     }
 
-    // ✅ سلايدر مستمر: كرر الصور مرتين حتى يصير loop بدون نهاية
-    // ملاحظة: غيّر أسماء الصور حسب اللي رافعها داخل images/
-    
-   const SLIDE_IMAGES = [];
-for (let i = 1; i <= 15; i++) {
-  SLIDE_IMAGES.push(`images/slide${i}.jpg`);
-  SLIDE_IMAGES.push(`images/slide${i}.jpeg`);
-}
+    function updateDatesUI(settings){
+      const now = new Date();
 
-    function preload(src){
-      return new Promise((resolve)=>{
-        const img = new Image();
-        img.onload = ()=>resolve(true);
-        img.onerror = ()=>resolve(false);
-        img.src = src + "?v=" + Date.now();
-      });
+      // If sect is shia, user wanted hijri day to shift (often -1). We'll apply manualOffset on top.
+      // sect baseline: sunni 0, shia -1 (common preference). User can override with manualOffset select.
+      const sectBase = (settings.sect === "shia") ? -1 : 0;
+      const deltaDays = sectBase + (parseInt(settings.manualOffset,10) || 0);
+
+      const hijriDate = new Date(now);
+      hijriDate.setDate(hijriDate.getDate() + deltaDays);
+
+      $("gregText").textContent = fmtGreg(now);
+      $("hijriText").textContent = fmtHijri(hijriDate);
+
+      // Ramadan day display (if month is Ramadan)
+      const hp = hijriParts(hijriDate);
+      if(hp.month && (hp.month.includes("رمضان") || hp.month.includes("رمض"))) {
+        $("ramadanDayText").textContent = `اليوم ${hp.day} رمضان ${hp.year} هـ (${settings.sect === "shia" ? "الوقف الشيعي" : "الوقت السني"})`;
+      } else {
+        $("ramadanDayText").textContent = `(${settings.sect === "shia" ? "الوقف الشيعي" : "الوقت السني"})`;
+      }
+
+      $("todayTitle").textContent = "اليوم";
     }
 
-    async function buildMarquee(){
+    function buildMarquee(){
       const track = $("marqueeTrack");
       const noBox = $("noImagesBox");
       const wrap  = $("marqueeBox");
@@ -676,111 +635,94 @@ for (let i = 1; i <= 15; i++) {
       track.innerHTML = "";
       noBox.style.display = "none";
 
-      const found = [];
-      for (const src of SLIDE_IMAGES){
-        // eslint-disable-next-line no-await-in-loop
-        if (await preload(src)) found.push(src);
-      }
+      // Build images directly, remove failed ones, then clone enough times for a continuous loop
+      for (const src of SLIDE_IMAGES) {
+        const pic = document.createElement("div");
+        pic.className = "pic";
 
-      if(found.length === 0){
-        noBox.style.display = "block";
-        return;
-      }
-
-      const loop = found.concat(found);
-      for(const src of loop){
-        const box = document.createElement("div");
-        box.className = "pic";
         const img = document.createElement("img");
         img.src = src;
         img.alt = "حلم بيروت";
-        box.appendChild(img);
-        track.appendChild(box);
-      }
-      requestAnimationFrame(() => {
-  const half = track.scrollWidth / 2;
-  track.style.setProperty("--shift", half + "px");
-});
-    }
+        img.loading = "eager";
 
-    function openSettings(){
-      $("settingsModal").style.display = "flex";
-      $("settingsModal").setAttribute("aria-hidden","false");
-    }
-    function closeSettings(){
-      $("settingsModal").style.display = "none";
-      $("settingsModal").setAttribute("aria-hidden","true");
+        img.onerror = () => { pic.remove(); };
+        pic.appendChild(img);
+        track.appendChild(pic);
+      }
+
+      // After a short delay, if nothing loaded, show hint; else duplicate enough for seamless scroll
+      setTimeout(() => {
+        const base = Array.from(track.querySelectorAll(".pic"));
+        if(base.length === 0){
+          noBox.style.display = "block";
+          return;
+        }
+
+        // Duplicate once for core loop
+        for(const node of base){
+          track.appendChild(node.cloneNode(true));
+        }
+
+        // Ensure content is wide enough to avoid empty gaps on large screens
+        const minWidth = wrap.clientWidth * 3;
+        while (track.scrollWidth < minWidth){
+          for(const node of base){
+            track.appendChild(node.cloneNode(true));
+          }
+        }
+
+        requestAnimationFrame(() => {
+          const shift = track.scrollWidth / 2;
+          track.style.setProperty("--shift", shift + "px");
+        });
+      }, 650);
     }
 
     async function render(){
-      setStatus("يتم التحديث…");
+      const settings = loadSettings();
+      $("sectSel").value = settings.sect;
+      $("manualOffsetSel").value = String(settings.manualOffset ?? 0);
+      $("cityPill").textContent = "بغداد";
 
-      const date = getDisplayDate();
-      const city = $("city").value;
-      const sect = $("sect").value;
+      updateDatesUI(settings);
+      setDuaForToday(settings);
 
-      $("cityPill").textContent = (city === "Basra") ? "البصرة" : "بغداد";
-
-      const sectLabel = (sect === "shia") ? "الوقف الشيعي" : "الوقف السني";
-      $("line1").textContent = `التاريخ الحالي (حسب ${sectLabel})`;
-
-      $("duaDayPill").textContent = "دعاء اليوم";
-      $("duaText").textContent = getDuaForDay();
-
+      setStatus("جاري التحديث…");
       try{
-        const out = await fetchTimingsAndDates(date, city);
-
-        $("hijriLine").textContent = out.hijriText;
-        $("gregLine").textContent  = out.gregText;
-
-        const t = out.timings;
-
-        // ✅ تعديل الوقف الشيعي (تقديري): المغرب +15 دقيقة، الإمساك -10 من الفجر
-        if (sect === "shia"){
-          t.maghrib = addMinutes(t.maghrib, 15);
-          t.imsak   = addMinutes(t.fajr, -10);
-        }
-
-        $("imsak").textContent   = toAmPm(t.imsak);
-        $("fajr").textContent    = toAmPm(t.fajr);
-        $("sunrise").textContent = toAmPm(t.sunrise);
-        $("dhuhr").textContent   = toAmPm(t.dhuhr);
-        $("asr").textContent     = toAmPm(t.asr);
-        $("maghrib").textContent = toAmPm(t.maghrib);
-        $("isha").textContent    = toAmPm(t.isha);
-
-        setStatus("تم ✅");
-        setTimeout(()=>setStatus("جاهز"), 900);
+        const t = await fetchTimings(settings.city, settings.country, settings.sect);
+        applyTimingToUI(t);
+        setStatus("جاهز");
       }catch(e){
         console.error(e);
-        ["imsak","fajr","sunrise","dhuhr","asr","maghrib","isha"].forEach(id=> $(id).textContent="—");
-        setStatus("تعذر جلب المواقيت");
+        setStatus("فشل التحديث");
       }
+
+      // Always rebuild marquee
+      buildMarquee();
     }
 
-    document.addEventListener("DOMContentLoaded", async () => {
-      loadSettings();
-      closeSettings();
-      await buildMarquee();
-      await render();
-      // إعادة محاولة خفيفة بعد التحميل لضمان عدم اختفاء المواقيت
-      setTimeout(()=>render(), 450);
+    // Events
+    document.addEventListener("DOMContentLoaded", () => {
+      // Safety: render even if cached refresh
+      render();
+      // render again after a moment to avoid intermittent empty state
+      setTimeout(render, 800);
     });
-    window.addEventListener("pageshow", () => render());
 
-    $("btnRefreshTop").addEventListener("click", render);
-    $("toggleSettings").addEventListener("click", openSettings);
-    $("btnClose").addEventListener("click", closeSettings);
-    $("btnClose2").addEventListener("click", closeSettings);
-    $("settingsModal").addEventListener("click", (e)=>{ if(e.target === $("settingsModal")) closeSettings(); });
+    $("refreshBtn").addEventListener("click", render);
 
-    $("btnSave").addEventListener("click", ()=>{ saveSettings(); closeSettings(); render(); setStatus("تم الحفظ ✅"); });
-    $("btnToday").addEventListener("click", ()=>{ $("date").value=""; saveSettings(); render(); });
+    $("saveBtn").addEventListener("click", () => {
+      const s = loadSettings();
+      s.sect = $("sectSel").value;
+      s.manualOffset = parseInt($("manualOffsetSel").value, 10) || 0;
+      saveSettings(s);
+      render();
+    });
 
-    $("city").addEventListener("change", ()=>{ saveSettings(); render(); });
-    $("sect").addEventListener("change", ()=>{ saveSettings(); render(); });
-    $("offset").addEventListener("change", ()=>{ saveSettings(); render(); });
-    $("date").addEventListener("change", ()=>{ saveSettings(); render(); });
+    $("resetBtn").addEventListener("click", () => {
+      saveSettings({...DEFAULTS});
+      render();
+    });
   </script>
 </body>
 </html>
