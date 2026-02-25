@@ -200,7 +200,7 @@
       font-weight:700;
     }
 
-    /* ===== Infinite marquee ===== */
+    /* ===== Professional Infinite marquee ===== */
     #marqueeBox{
       margin-top:12px;
       border-radius:18px;
@@ -210,15 +210,18 @@
       position:relative;
     }
     #marqueeTrack{
-      --shift: 700px;
+      /* JS will set --shift and --dur */
+      --shift: 800px;
+      --dur: 26s;
       display:flex;
-      flex-wrap:nowrap;          /* مهم: يمنع أي صف ثاني */
+      flex-wrap:nowrap;          /* يمنع أي سطر ثاني */
       gap:12px;
       align-items:center;
       width:max-content;
       padding:10px 12px;
-      animation: none;           /* نبدأ بدون حركة لحد ما نعرف الشفت */
       will-change: transform;
+      animation: scrollX var(--dur) linear infinite;
+      transform: translateZ(0);
     }
     #marqueeBox:hover #marqueeTrack{animation-play-state:paused;}
     @keyframes scrollX{
@@ -457,25 +460,24 @@
   <script>
     const $ = (id) => document.getElementById(id);
 
-    // ========= الصور: دعم slide1..slide30 مع احتمالات أسماء =========
-    // ملاحظة مهمة: لازم أسماء الملفات تطابق بالضبط (GitHub حساس لحروف كبيرة/صغيرة)
+    // ✅ أسماء الصور عندك بالضبط (حسب لقطة GitHub)
     const SLIDE_IMAGES = [
-  "images/slide1.jpeg",
-  "images/slide2.jpeg",
-  "images/slide3.jpeg",
-  "images/slide4.jpeg",
-  "images/slide5.jpeg",
-  "images/slide6.jpeg",
-  "images/slide7.jpeg",
-  "images/slide8.jpeg",
-  "images/slide9.jpeg",
-  "images/slide10.jpeg",
-  "images/slide11.jpeg",
-  "images/slide12.jpeg",
-  "images/slide13.jpeg",
-  "images/slide14.jpeg",
-  "images/slide15.jpeg"
-];
+      "images/slide1.jpeg",
+      "images/slide2.jpeg",
+      "images/slide3.jpeg",
+      "images/slide4.jpeg",
+      "images/slide5.jpeg",
+      "images/slide6.jpeg",
+      "images/slide7.jpeg",
+      "images/slide8.jpeg",
+      "images/slide9.jpeg",
+      "images/slide10.jpeg",
+      "images/slide11.jpeg",
+      "images/slide12.jpeg",
+      "images/slide13.jpeg",
+      "images/slide14.jpeg",
+      "images/slide15.jpeg"
+    ];
 
     const STORAGE_KEY = "ramadan_dream_beirut_settings_v1";
 
@@ -595,55 +597,46 @@
       $("todayTitle").textContent = "اليوم";
     }
 
-    // ========= Marquee (ثابت + بدون أي حركات متداخلة) =========
-    let marqueeInitDone = false;
+    // =================== Professional Marquee Engine ===================
+    // فكرة الاحتراف: ننتظر كل الصور تتحمّل فعلاً، وبعدين:
+    // 1) نبني "مجموعة" واحدة (15 صورة)
+    // 2) نكررها مرات كافية لتغطية الشاشة بدون فراغ
+    // 3) نحسب shift = عرض مجموعة واحدة (وليس نصف/ثلث عشوائي)
+    // 4) نحسب مدة الحركة حسب سرعة ثابتة px/s (نفس الإحساس على كل الشاشات)
+    let marqueeReady = false;
 
-    function restartAnim(track){
-      track.style.animation = "none";
-      void track.offsetHeight;
-      track.style.animation = "scrollX 26s linear infinite";
-    }
-
-    function preload(src, timeoutMs=3500){
+    function waitImg(img, timeoutMs=6000){
       return new Promise((resolve)=>{
-        const img = new Image();
+        if(img.complete && img.naturalWidth > 0) return resolve(true);
         let done = false;
-        const finish = (ok)=>{
-          if(done) return;
-          done = true;
-          resolve(ok ? src : null);
-        };
+        const finish = (ok)=>{ if(done) return; done = true; resolve(ok); };
         const t = setTimeout(()=>finish(false), timeoutMs);
-        img.onload = ()=>{ clearTimeout(t); finish(true); };
-        img.onerror = ()=>{ clearTimeout(t); finish(false); };
-        img.src = src;
+        img.addEventListener("load", ()=>{ clearTimeout(t); finish(true); }, {once:true});
+        img.addEventListener("error", ()=>{ clearTimeout(t); finish(false); }, {once:true});
       });
     }
 
-    async function initMarqueeOnce(){
-      if(marqueeInitDone) return;
-      marqueeInitDone = true;
+    function restartAnimation(track){
+      track.style.animation = "none";
+      void track.offsetHeight;
+      track.style.animation = "scrollX var(--dur) linear infinite";
+    }
+
+    async function initMarquee(){
+      if(marqueeReady) return;
+      marqueeReady = true;
 
       const track = $("marqueeTrack");
-      const noBox = $("noImagesBox");
       const wrap  = $("marqueeBox");
-      if(!track || !noBox || !wrap) return;
+      const noBox = $("noImagesBox");
+      if(!track || !wrap || !noBox) return;
 
       track.innerHTML = "";
       noBox.style.display = "none";
 
-      // جرّب تحميل الصور بشكل سريع، وخذ اللي ينجح فقط
-      const unique = Array.from(new Set(SLIDE_IMAGES));
-      const results = await Promise.all(unique.map(s => preload(s)));
-      const loaded = results.filter(Boolean);
-
-      if(loaded.length === 0){
-        noBox.style.display = "block";
-        return;
-      }
-
-      // ابني نسخة أولى
-      const makePic = (src)=>{
+      // Build ONE set
+      const oneSet = [];
+      for(const src of SLIDE_IMAGES){
         const pic = document.createElement("div");
         pic.className = "pic";
         const img = document.createElement("img");
@@ -651,26 +644,70 @@
         img.alt = "حلم بيروت";
         img.loading = "eager";
         pic.appendChild(img);
-        return pic;
-      };
-
-      for(const src of loaded){
-        track.appendChild(makePic(src));
+        track.appendChild(pic);
+        oneSet.push(pic);
       }
 
-      // انسخها مرة ثانية (نسختين فقط = لوب ناعم)
-      const firstSet = Array.from(track.children);
-      for(const node of firstSet){
-        track.appendChild(node.cloneNode(true));
+      // Wait for ALL images in the set (so widths become real)
+      const imgs = Array.from(track.querySelectorAll("img"));
+      const loaded = await Promise.all(imgs.map(i => waitImg(i)));
+      const okCount = loaded.filter(Boolean).length;
+
+      // If some failed, remove only failed pics (but keep the rest)
+      if(okCount === 0){
+        noBox.style.display = "block";
+        return;
+      }
+      for(let i=imgs.length-1;i>=0;i--){
+        if(!loaded[i]){
+          imgs[i].closest(".pic")?.remove();
+        }
       }
 
-      // احسب الشفت = عرض النسخة الأولى
-      requestAnimationFrame(()=>{
-        const shift = track.scrollWidth / 2;
-        track.style.setProperty("--shift", shift + "px");
-        restartAnim(track);
-      });
+      // Re-take the final oneSet after removals
+      const setNodes = Array.from(track.querySelectorAll(".pic"));
+      if(setNodes.length === 0){
+        noBox.style.display = "block";
+        return;
+      }
+
+      // Measure width of one set
+      // (Use scrollWidth right after images loaded)
+      const oneSetWidth = track.scrollWidth;
+
+      // Now duplicate: make the total content at least 2.5x viewport + one set
+      // so it never shows empty space.
+      const target = wrap.clientWidth * 2.5 + oneSetWidth;
+      while(track.scrollWidth < target){
+        for(const node of setNodes){
+          track.appendChild(node.cloneNode(true));
+        }
+      }
+
+      // Set shift equal to width of ONE set (so loop is seamless)
+      track.style.setProperty("--shift", oneSetWidth + "px");
+
+      // Speed: ثابت (px per second) = نفس الإحساس على كل شاشة
+      const PX_PER_SEC = 55; // أبطأ/احترافي. إذا تريد أسرع نخليه 70
+      const durSec = Math.max(8, oneSetWidth / PX_PER_SEC);
+      track.style.setProperty("--dur", durSec.toFixed(2) + "s");
+
+      // Restart animation cleanly after setting vars
+      requestAnimationFrame(()=> restartAnimation(track));
+
+      // Recalculate on resize (بدون إعادة بناء)
+      let rAF = null;
+      window.addEventListener("resize", ()=>{
+        if(rAF) cancelAnimationFrame(rAF);
+        rAF = requestAnimationFrame(()=>{
+          // keep same speed; just recompute duration based on set width
+          const newDur = Math.max(8, oneSetWidth / PX_PER_SEC);
+          track.style.setProperty("--dur", newDur.toFixed(2) + "s");
+          restartAnimation(track);
+        });
+      }, {passive:true});
     }
+    // =================== End Marquee ===================
 
     async function render(){
       const settings = loadSettings();
@@ -691,8 +728,8 @@
         setStatus("فشل التحديث");
       }
 
-      // لا تعيد بناء السلايدر كل مرة — مرة واحدة فقط
-      initMarqueeOnce();
+      // ✅ تشغيل السلايدر مرة واحدة فقط (بدون أي تداخل/إعادة بناء)
+      initMarquee();
     }
 
     document.addEventListener("DOMContentLoaded", () => {
