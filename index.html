@@ -702,12 +702,9 @@
     }
 
     // Events
-    document.addEventListener("DOMContentLoaded", () => {
-      // Safety: render even if cached refresh
-      render();
-      // render again after a moment to avoid intermittent empty state
-      setTimeout(render, 800);
-    });
+   document.addEventListener("DOMContentLoaded", () => {
+  render();
+});
 
     $("refreshBtn").addEventListener("click", render);
 
