@@ -357,6 +357,46 @@ margin-top:12px;
       font-size:16px;
       line-height:1.9;
     }
+
+    /* ===== Header Text Slider (Professional Typing) ===== */
+    #headerTextSlider{
+      margin:4px 0 0;
+      color:var(--muted);
+      font-size:13.5px;
+      line-height:1.55;
+      /* حتى ما ينقص بالموبايل */
+      white-space:normal;
+      overflow:visible;
+      text-overflow:clip;
+      /* شكل احترافي */
+      position:relative;
+      padding-inline-start:2px;
+      min-height: 2.2em; /* يثبت ارتفاع سطرين تقريباً */
+    }
+    /* Cursor */
+    #headerTextSlider.typing::after{
+      content:"";
+      display:inline-block;
+      width:10px;
+      height:1.05em;
+      margin-inline-start:6px;
+      border-radius:2px;
+      background: rgba(245,196,0,.85);
+      transform: translateY(2px);
+      animation: caretBlink .9s steps(1) infinite;
+      box-shadow: 0 0 14px rgba(245,196,0,.25);
+    }
+    @keyframes caretBlink{ 50%{opacity:0;} }
+    #headerTextSlider.pop{
+      animation: popIn .45s ease;
+    }
+    @keyframes popIn{
+      from{opacity:0; transform: translateY(4px);}
+      to{opacity:1; transform: translateY(0);}
+    }
+    @media (prefers-reduced-motion: reduce){
+      #headerTextSlider.typing::after{ animation:none; opacity:.7; }
+    }
   </style>
 </head>
 <body>
@@ -368,7 +408,7 @@ margin-top:12px;
         </div>
         <div class="titles">
           <h1>تقويم رمضان — حلم بيروت</h1>
-          <p>مذاق بيروت الأصيل بأطباق فاخرة وأجواء تأخذك إلى البحر المتوسط · الدوام 24 ساعة</p>
+          <p id="headerTextSlider" class="typing" aria-live="polite"></p>
         </div>
       </div>
       <div class="pill" id="statusPill">جاهز</div>
@@ -412,7 +452,7 @@ margin-top:12px;
             <a class="socialIcon" href="https://wa.me/9647701111722" target="_blank" rel="noopener" aria-label="WhatsApp">
               <svg viewBox="0 0 32 32" width="22" height="22" aria-hidden="true">
                 <path fill="currentColor" d="M19.11 17.59c-.3-.15-1.77-.87-2.04-.97-.27-.1-.47-.15-.66.15-.2.3-.76.97-.93 1.17-.17.2-.34.22-.64.07-.3-.15-1.25-.46-2.38-1.47-.88-.78-1.48-1.75-1.65-2.05-.17-.3-.02-.46.13-.61.13-.13.3-.34.45-.51.15-.17.2-.3.3-.5.1-.2.05-.38-.03-.53-.08-.15-.66-1.6-.9-2.19-.24-.57-.48-.49-.66-.5h-.56c-.2 0-.53.08-.8.38-.27.3-1.05 1.03-1.05 2.5 0 1.47 1.07 2.9 1.22 3.1.15.2 2.1 3.2 5.08 4.49.71.31 1.27.5 1.7.64.71.23 1.36.2 1.87.12.57-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.08-.12-.27-.2-.57-.35z"/>
-                <path fill="currentColor" d="M16.02 3C9.39 3 4 8.39 4 15.02c0 2.11.55 4.17 1.59 5.99L4 29l8.19-1.54a12 12 0 0 0 3.83.62C22.65 28.08 28 22.65 28 16.02 28 9.39 22.65 3 16.02 3zm0 22.03c-1.22 0-2.41-.23-3.54-.68l-.56-.22-4.85.91.92-4.73-.24-.6a9.95 9.95 0 0 1-1.02-4.39c0-5.53 4.5-10.03 10.03-10.03 5.53 0 10.03 4.5 10.03 10.03 0 5.53-4.5 10.03-10.03 10.03z"/>
+                <path fill="currentColor" d="M16.02 3C9.39 3 4 8.39 4 15.02c0 2.11.55 4.17 1.59 5.99L4 29l8.19-1.54a12 12 0 0 0 3.83.62C22.65 28.08 28 22.65 28 16.02 28 9.39 22.65 3 16.02 3zm0 22.03c-1.22 0-2.41-.23-3.54-.68l-.56-.22-4.85 .91.92-4.73-.24-.6a9.95 9.95 0 0 1-1.02-4.39c0-5.53 4.5-10.03 10.03-10.03 5.53 0 10.03 4.5 10.03 10.03 0 5.53-4.5 10.03-10.03 10.03z"/>
               </svg>
             </a>
 
@@ -475,6 +515,83 @@ margin-top:12px;
 
   <script>
     const $ = (id) => document.getElementById(id);
+
+    // ===== Header Text Slider (Professional Typing) =====
+    const headerMessages = [
+      "هلا بشهر الخير  في حلم بيروت…",
+      "لَمّة، ضحكة، وحكايات تنعاد كل ليلة 🌙",
+      "أجواء رمضانية، وطاولات تجمع العائلة والأصدقاء",
+      "من الإفطار للسحور… الوقت إلَه طعم ثاني معنا"
+    ];
+
+    (function(){
+      const el = document.getElementById("headerTextSlider");
+      if(!el) return;
+
+      const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      const TYPE_SPEED = 38;
+      const ERASE_SPEED = 18;
+      const HOLD_MS = 1600;
+      const BETWEEN_MS = 350;
+
+      let idx = 0;
+      let pos = 0;
+      let typing = true;
+      let paused = false;
+      let timer = null;
+
+      // توقف مؤقت عند الضغط/اللمس (للموبايل)
+      el.addEventListener("pointerdown", () => paused = true, {passive:true});
+      el.addEventListener("pointerup",   () => paused = false, {passive:true});
+      el.addEventListener("pointercancel", () => paused = false, {passive:true});
+
+      function setText(t){ el.textContent = t; }
+
+      function step(){
+        if(paused){ timer = setTimeout(step, 120); return; }
+
+        if(reduce){
+          el.classList.add("pop");
+          setText(headerMessages[idx]);
+          idx = (idx + 1) % headerMessages.length;
+          setTimeout(()=> el.classList.remove("pop"), 500);
+          timer = setTimeout(step, 3500);
+          return;
+        }
+
+        const msg = headerMessages[idx];
+
+        if(typing){
+          pos++;
+          setText(msg.slice(0, pos));
+          if(pos >= msg.length){
+            typing = false;
+            timer = setTimeout(step, HOLD_MS);
+            return;
+          }
+          timer = setTimeout(step, TYPE_SPEED);
+        } else {
+          pos--;
+          setText(msg.slice(0, Math.max(0,pos)));
+          if(pos <= 0){
+            typing = true;
+            idx = (idx + 1) % headerMessages.length;
+            timer = setTimeout(step, BETWEEN_MS);
+            return;
+          }
+          timer = setTimeout(step, ERASE_SPEED);
+        }
+      }
+
+      el.classList.add("typing");
+      setText("");
+      step();
+
+      document.addEventListener("visibilitychange", () => {
+        paused = document.hidden ? true : false;
+      }, {passive:true});
+    })();
 
     // ✅ أسماء الصور عندك بالضبط (لا يوجد أي limit = 3)
     const SLIDE_IMAGES = [
@@ -615,8 +732,6 @@ margin-top:12px;
     }
 
     // ===== Marquee Engine (Professional / No overlap / Seamless) =====
-    // الفكرة: ننتظر تحميل الصور، ثم نحسب عرض "مجموعة واحدة" بدقة، ثم نكررها
-    // بعدد كافي حتى ما يصير فراغ، وبعدها نشغل الانيميشن مرة وحدة.
     let marqueeStarted = false;
 
     function restartMarquee(track){
@@ -694,7 +809,6 @@ margin-top:12px;
       oneSetWidth = Math.ceil(oneSetWidth);
 
       // 4) Duplicate enough times to avoid gaps on any screen
-      // نحتاج المحتوى يكون أكبر من عرض الشاشة بكثير حتى ما يصير فراغ
       const target = wrap.clientWidth * 3 + oneSetWidth;
       while(track.scrollWidth < target){
         for(const node of setNodes){
@@ -706,40 +820,30 @@ margin-top:12px;
       track.style.setProperty("--shift", oneSetWidth + "px");
 
       // 6) Professional constant speed (px/sec)
-      const PX_PER_SEC = 28; // إذا تريد أسرع خلّيه 70
+      const PX_PER_SEC = 28; // إذا تريد أبطأ قلّله (مثلاً 18)
       const durSec = Math.max(10, oneSetWidth / PX_PER_SEC);
       track.style.setProperty("--dur", durSec.toFixed(2) + "s");
 
       // 7) Start animation cleanly
       requestAnimationFrame(()=> restartMarquee(track));
 
-    
       // ✅ منع إعادة التشغيل عند سكرول الموبايل (الـ resize الوهمي)
-// نخليها فقط إذا تغيّر العرض فعلاً (مثلاً تدوير الشاشة)
-let lastW = Math.round(wrap.getBoundingClientRect().width);
+      let lastW = Math.round(wrap.getBoundingClientRect().width);
 
-window.addEventListener("resize", () => {
-  const nowW = Math.round(wrap.getBoundingClientRect().width);
+      window.addEventListener("resize", () => {
+        const nowW = Math.round(wrap.getBoundingClientRect().width);
+        if (Math.abs(nowW - lastW) < 20) return;
+        lastW = nowW;
+        const newDur = Math.max(10, oneSetWidth / PX_PER_SEC);
+        track.style.setProperty("--dur", newDur.toFixed(2) + "s");
+        restartMarquee(track);
+      }, { passive: true });
 
-  // إذا التغيير بسيط (بسبب شريط العنوان) لا نسوي شي
-  if (Math.abs(nowW - lastW) < 20) return;
-
-  lastW = nowW;
-
-  // نعدل المدة فقط (وبدون restart إذا تحب)
-  const newDur = Math.max(10, oneSetWidth / PX_PER_SEC);
-  track.style.setProperty("--dur", newDur.toFixed(2) + "s");
-
-  // إذا تريد بدون أي jump نهائياً، علّق سطر restart التالي
-  restartMarquee(track);
-}, { passive: true });
-
-// خيار إضافي: تدوير الشاشة فقط
-window.addEventListener("orientationchange", () => {
-  const newDur = Math.max(10, oneSetWidth / PX_PER_SEC);
-  track.style.setProperty("--dur", newDur.toFixed(2) + "s");
-  restartMarquee(track);
-}, { passive: true });
+      window.addEventListener("orientationchange", () => {
+        const newDur = Math.max(10, oneSetWidth / PX_PER_SEC);
+        track.style.setProperty("--dur", newDur.toFixed(2) + "s");
+        restartMarquee(track);
+      }, { passive: true });
     }
 
     async function render(){
