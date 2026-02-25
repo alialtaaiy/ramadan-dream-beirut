@@ -713,16 +713,33 @@ margin-top:12px;
       // 7) Start animation cleanly
       requestAnimationFrame(()=> restartMarquee(track));
 
-      // Resize: keep same speed feel (duration only) without rebuild
-      let raf = null;
-      window.addEventListener("resize", ()=>{
-        if(raf) cancelAnimationFrame(raf);
-        raf = requestAnimationFrame(()=>{
-          const newDur = Math.max(10, oneSetWidth / PX_PER_SEC);
-          track.style.setProperty("--dur", newDur.toFixed(2) + "s");
-          restartMarquee(track);
-        });
-      }, {passive:true});
+    
+      // ✅ منع إعادة التشغيل عند سكرول الموبايل (الـ resize الوهمي)
+// نخليها فقط إذا تغيّر العرض فعلاً (مثلاً تدوير الشاشة)
+let lastW = Math.round(wrap.getBoundingClientRect().width);
+
+window.addEventListener("resize", () => {
+  const nowW = Math.round(wrap.getBoundingClientRect().width);
+
+  // إذا التغيير بسيط (بسبب شريط العنوان) لا نسوي شي
+  if (Math.abs(nowW - lastW) < 20) return;
+
+  lastW = nowW;
+
+  // نعدل المدة فقط (وبدون restart إذا تحب)
+  const newDur = Math.max(10, oneSetWidth / PX_PER_SEC);
+  track.style.setProperty("--dur", newDur.toFixed(2) + "s");
+
+  // إذا تريد بدون أي jump نهائياً، علّق سطر restart التالي
+  restartMarquee(track);
+}, { passive: true });
+
+// خيار إضافي: تدوير الشاشة فقط
+window.addEventListener("orientationchange", () => {
+  const newDur = Math.max(10, oneSetWidth / PX_PER_SEC);
+  track.style.setProperty("--dur", newDur.toFixed(2) + "s");
+  restartMarquee(track);
+}, { passive: true });
     }
 
     async function render(){
