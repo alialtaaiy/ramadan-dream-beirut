@@ -466,8 +466,8 @@
           </div>
 
           <p class="note">
-            • المصدر: API AlAdhan لمواقيت الصلاة (حسب طريقة الحساب). citeturn0search0turn0search1<br/>
-            • “الوقت الشيعي” هنا يعتمد طريقة الحساب رقم <b>0</b> (Jafari / Shia Ithna‑Ashari) في AlAdhan. citeturn0search0<br/>
+            • المصدر: API AlAdhan لمواقيت الصلاة (حسب طريقة الحساب).<br/>
+            • “الوقت الشيعي” هنا يعتمد طريقة الحساب رقم <b>0</b> (Jafari / Shia Ithna‑Ashari) في AlAdhan.<br/>
             • إذا عندك توقيت محلي مختلف (مثل المغرب 6:10 م) استخدم “تصحيح يوم رمضان” أو قلّي المدينة/المنطقة بالضبط حتى نضبط الطريقة.
           </p>
         </div>
@@ -538,7 +538,6 @@
     function fmtHijri(d){
       // Islamic calendar via Intl
       try{
-        // ar-SA-u-ca-islamic gives islamic date
         return new Intl.DateTimeFormat("ar-SA-u-ca-islamic", {weekday:"long", year:"numeric", month:"long", day:"numeric"}).format(d);
       }catch(_){
         return "—";
@@ -546,7 +545,6 @@
     }
 
     function hijriParts(d){
-      // return {day, monthName, year} in Arabic if possible
       try{
         const parts = new Intl.DateTimeFormat("ar-SA-u-ca-islamic", {day:"numeric", month:"long", year:"numeric"}).formatToParts(d);
         const get = (type)=> parts.find(p=>p.type===type)?.value;
@@ -556,8 +554,7 @@
       }
     }
 
-    function setDuaForToday(s){
-      // Simple daily rotating duaa list
+    function setDuaForToday(){
       const DUAS = [
         "اللهم اجعل صيامنا فيه صيام الصائمين وقيامنا فيه قيام القائمين.",
         "اللهم اغفر لنا ذنوبنا، واصلح لنا شأننا كله، ولا تكلنا إلى أنفسنا طرفة عين.",
@@ -571,15 +568,13 @@
     }
 
     async function fetchTimings(city, country, sect){
-      // AlAdhan timingsByCity endpoint (free, no key)
-      const method = (sect === "shia") ? 0 : 3; // 0 = Jafari/Shia, 3 = Muslim World League citeturn0search0
+      const method = (sect === "shia") ? 0 : 3;
       const url = `https://api.aladhan.com/v1/timingsByCity?city=${encodeURIComponent(city)}&country=${encodeURIComponent(country)}&method=${method}`;
       const res = await fetch(url, {cache:"no-store"});
       if(!res.ok) throw new Error("API error");
       const js = await res.json();
       if(!js || js.code !== 200) throw new Error("Bad response");
       const t = js.data.timings;
-      // Normalize keys
       return {
         imsak: t.Imsak,
         fajr: t.Fajr,
@@ -603,19 +598,14 @@
 
     function updateDatesUI(settings){
       const now = new Date();
-
-      // If sect is shia, user wanted hijri day to shift (often -1). We'll apply manualOffset on top.
-      // sect baseline: sunni 0, shia -1 (common preference). User can override with manualOffset select.
       const sectBase = (settings.sect === "shia") ? -1 : 0;
       const deltaDays = sectBase + (parseInt(settings.manualOffset,10) || 0);
-
       const hijriDate = new Date(now);
       hijriDate.setDate(hijriDate.getDate() + deltaDays);
 
       $("gregText").textContent = fmtGreg(now);
       $("hijriText").textContent = fmtHijri(hijriDate);
 
-      // Ramadan day display (if month is Ramadan)
       const hp = hijriParts(hijriDate);
       if(hp.month && (hp.month.includes("رمضان") || hp.month.includes("رمض"))) {
         $("ramadanDayText").textContent = `اليوم ${hp.day} رمضان ${hp.year} هـ (${settings.sect === "shia" ? "الوقف الشيعي" : "الوقت السني"})`;
@@ -626,16 +616,36 @@
       $("todayTitle").textContent = "اليوم";
     }
 
+    // ===== Marquee stability fix (ONLY affects photo movement) =====
+    let _marqueeBuiltOnce = false;
+    let _marqueeTimer = null;
+    let _marqueeBuildSeq = 0;
+
+    function _restartTrackAnimation(track){
+      // Restart CSS animation cleanly (prevents "multiple speeds" feel)
+      track.style.animation = "none";
+      // force reflow
+      void track.offsetHeight;
+      track.style.animation = "scrollX 26s linear infinite";
+    }
+
     function buildMarquee(){
       const track = $("marqueeTrack");
       const noBox = $("noImagesBox");
       const wrap  = $("marqueeBox");
       if(!track || !noBox || !wrap) return;
 
+      // Cancel any pending previous build timer to prevent late callbacks
+      if(_marqueeTimer) {
+        clearTimeout(_marqueeTimer);
+        _marqueeTimer = null;
+      }
+      const mySeq = ++_marqueeBuildSeq;
+
       track.innerHTML = "";
       noBox.style.display = "none";
 
-      // Build images directly, remove failed ones, then clone enough times for a continuous loop
+      // Build images
       for (const src of SLIDE_IMAGES) {
         const pic = document.createElement("div");
         pic.className = "pic";
@@ -644,14 +654,17 @@
         img.src = src;
         img.alt = "حلم بيروت";
         img.loading = "eager";
-
         img.onerror = () => { pic.remove(); };
+
         pic.appendChild(img);
         track.appendChild(pic);
       }
 
-      // After a short delay, if nothing loaded, show hint; else duplicate enough for seamless scroll
-      setTimeout(() => {
+      // Delay: wait a bit for some images to load/remove (onerror)
+      _marqueeTimer = setTimeout(() => {
+        // If a newer build happened, ignore this callback
+        if(mySeq !== _marqueeBuildSeq) return;
+
         const base = Array.from(track.querySelectorAll(".pic"));
         if(base.length === 0){
           noBox.style.display = "block";
@@ -663,7 +676,7 @@
           track.appendChild(node.cloneNode(true));
         }
 
-        // Ensure content is wide enough to avoid empty gaps on large screens
+        // Ensure wide enough to avoid empty gaps on large screens
         const minWidth = wrap.clientWidth * 3;
         while (track.scrollWidth < minWidth){
           for(const node of base){
@@ -674,9 +687,18 @@
         requestAnimationFrame(() => {
           const shift = track.scrollWidth / 2;
           track.style.setProperty("--shift", shift + "px");
+          _restartTrackAnimation(track);
         });
       }, 650);
     }
+
+    function ensureMarquee(){
+      // Build marquee ONE time only; stops re-building on every render (which resets/changes speed)
+      if(_marqueeBuiltOnce) return;
+      _marqueeBuiltOnce = true;
+      buildMarquee();
+    }
+    // ===== End marquee fix =====
 
     async function render(){
       const settings = loadSettings();
@@ -685,7 +707,7 @@
       $("cityPill").textContent = "بغداد";
 
       updateDatesUI(settings);
-      setDuaForToday(settings);
+      setDuaForToday();
 
       setStatus("جاري التحديث…");
       try{
@@ -697,14 +719,14 @@
         setStatus("فشل التحديث");
       }
 
-      // Always rebuild marquee
-      buildMarquee();
+      // Only initialize marquee once
+      ensureMarquee();
     }
 
     // Events
-   document.addEventListener("DOMContentLoaded", () => {
-  render();
-});
+    document.addEventListener("DOMContentLoaded", () => {
+      render();
+    });
 
     $("refreshBtn").addEventListener("click", render);
 
