@@ -459,18 +459,23 @@
 
     // ========= الصور: دعم slide1..slide30 مع احتمالات أسماء =========
     // ملاحظة مهمة: لازم أسماء الملفات تطابق بالضبط (GitHub حساس لحروف كبيرة/صغيرة)
-    const SLIDE_IMAGES = [];
-    for (let i = 1; i <= 30; i++) {
-      const n1 = `slide${i}`;
-      const n2 = `slide${String(i).padStart(2,"0")}`;
-      const bases = [n1, n2, n1.toUpperCase(), n2.toUpperCase(), `Slide${i}`, `Slide${String(i).padStart(2,"0")}`];
-      const exts  = [".jpg",".jpeg",".png",".JPG",".JPEG",".PNG"];
-      for (const b of bases){
-        for (const e of exts){
-          SLIDE_IMAGES.push(`images/${b}${e}`);
-        }
-      }
-    }
+    const SLIDE_IMAGES = [
+  "images/slide1.jpeg",
+  "images/slide2.jpeg",
+  "images/slide3.jpeg",
+  "images/slide4.jpeg",
+  "images/slide5.jpeg",
+  "images/slide6.jpeg",
+  "images/slide7.jpeg",
+  "images/slide8.jpeg",
+  "images/slide9.jpeg",
+  "images/slide10.jpeg",
+  "images/slide11.jpeg",
+  "images/slide12.jpeg",
+  "images/slide13.jpeg",
+  "images/slide14.jpeg",
+  "images/slide15.jpeg"
+];
 
     const STORAGE_KEY = "ramadan_dream_beirut_settings_v1";
 
