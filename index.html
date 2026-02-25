@@ -212,11 +212,12 @@
     #marqueeTrack{
       --shift: 700px;
       display:flex;
+      flex-wrap:nowrap;          /* مهم: يمنع أي صف ثاني */
       gap:12px;
       align-items:center;
       width:max-content;
       padding:10px 12px;
-      animation: scrollX 26s linear infinite;
+      animation: none;           /* نبدأ بدون حركة لحد ما نعرف الشفت */
       will-change: transform;
     }
     #marqueeBox:hover #marqueeTrack{animation-play-state:paused;}
@@ -369,7 +370,6 @@
     </header>
 
     <div class="grid">
-      <!-- LEFT: Today + timings + dua + marquee + socials -->
       <section class="card">
         <div class="cardHead">
           <h2>📅 اليوم والمواقيت</h2>
@@ -398,34 +398,15 @@
             <p class="duaText" id="duaText">—</p>
           </div>
 
-          <!-- Infinite sliding photos (single strip in the center) -->
           <div id="marqueeBox" aria-label="صور مطعم حلم بيروت">
             <div id="marqueeTrack"></div>
             <div id="noImagesBox">لم يتم العثور على صور داخل مجلد <b>images</b>.</div>
           </div>
 
-          <!-- Social icons row -->
           <div class="socialRow" aria-label="روابط التواصل">
-            <a class="socialIcon" href="https://wa.me/9647701111722" target="_blank" rel="noopener" aria-label="WhatsApp">
-              <svg viewBox="0 0 32 32" width="22" height="22" aria-hidden="true">
-                <path fill="currentColor" d="M19.11 17.59c-.3-.15-1.77-.87-2.04-.97-.27-.1-.47-.15-.66.15-.2.3-.76.97-.93 1.17-.17.2-.34.22-.64.07-.3-.15-1.25-.46-2.38-1.47-.88-.78-1.48-1.75-1.65-2.05-.17-.3-.02-.46.13-.61.13-.13.3-.34.45-.51.15-.17.2-.3.3-.5.1-.2.05-.38-.03-.53-.08-.15-.66-1.6-.9-2.19-.24-.57-.48-.49-.66-.5h-.56c-.2 0-.53.08-.8.38-.27.3-1.05 1.03-1.05 2.5 0 1.47 1.07 2.9 1.22 3.1.15.2 2.1 3.2 5.08 4.49.71.31 1.27.5 1.7.64.71.23 1.36.2 1.87.12.57-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.08-.12-.27-.2-.57-.35z"/>
-                <path fill="currentColor" d="M16.02 3C9.39 3 4 8.39 4 15.02c0 2.11.55 4.17 1.59 5.99L4 29l8.19-1.54a12 12 0 0 0 3.83.62C22.65 28.08 28 22.65 28 16.02 28 9.39 22.65 3 16.02 3zm0 22.03c-1.22 0-2.41-.23-3.54-.68l-.56-.22-4.85.91.92-4.73-.24-.6a9.95 9.95 0 0 1-1.02-4.39c0-5.53 4.5-10.03 10.03-10.03 5.53 0 10.03 4.5 10.03 10.03 0 5.53-4.5 10.03-10.03 10.03z"/>
-              </svg>
-            </a>
-
-            <a class="socialIcon" href="https://www.instagram.com/helem.rest?igsh=bHU3azE0dGdseGVv" target="_blank" rel="noopener" aria-label="Instagram">
-              <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
-                <path fill="currentColor" d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9A5.5 5.5 0 0 1 16.5 22h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9z"/>
-                <path fill="currentColor" d="M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/>
-                <path fill="currentColor" d="M17.75 6.25a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-              </svg>
-            </a>
-
-            <a class="socialIcon" href="https://www.facebook.com/helemrest/" target="_blank" rel="noopener" aria-label="Facebook">
-              <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
-                <path fill="currentColor" d="M13.5 22v-8h2.7l.4-3H13.5V9.1c0-.9.3-1.6 1.6-1.6H16.7V4.9c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3V11H7.5v3H10v8h3.5z"/>
-              </svg>
-            </a>
+            <a class="socialIcon" href="https://wa.me/9647701111722" target="_blank" rel="noopener" aria-label="WhatsApp">W</a>
+            <a class="socialIcon" href="https://www.instagram.com/helem.rest?igsh=bHU3azE0dGdseGVv" target="_blank" rel="noopener" aria-label="Instagram">I</a>
+            <a class="socialIcon" href="https://www.facebook.com/helemrest/" target="_blank" rel="noopener" aria-label="Facebook">F</a>
           </div>
 
           <footer>
@@ -435,7 +416,6 @@
         </div>
       </section>
 
-      <!-- RIGHT: minimal settings (kept but not "big") -->
       <aside class="card">
         <div class="cardHead">
           <h2>⚙️ الإعدادات</h2>
@@ -468,7 +448,6 @@
           <p class="note">
             • المصدر: API AlAdhan لمواقيت الصلاة (حسب طريقة الحساب).<br/>
             • “الوقت الشيعي” هنا يعتمد طريقة الحساب رقم <b>0</b> (Jafari / Shia Ithna‑Ashari) في AlAdhan.<br/>
-            • إذا عندك توقيت محلي مختلف (مثل المغرب 6:10 م) استخدم “تصحيح يوم رمضان” أو قلّي المدينة/المنطقة بالضبط حتى نضبط الطريقة.
           </p>
         </div>
       </aside>
@@ -478,12 +457,19 @@
   <script>
     const $ = (id) => document.getElementById(id);
 
-    // Build slide list: try both .jpg and .jpeg for each number
+    // ========= الصور: دعم slide1..slide30 مع احتمالات أسماء =========
+    // ملاحظة مهمة: لازم أسماء الملفات تطابق بالضبط (GitHub حساس لحروف كبيرة/صغيرة)
     const SLIDE_IMAGES = [];
-    for (let i = 1; i <= 30; i++) { // supports more if you add
-      SLIDE_IMAGES.push(`images/slide${i}.jpg`);
-      SLIDE_IMAGES.push(`images/slide${i}.jpeg`);
-      SLIDE_IMAGES.push(`images/slide${i}.png`);
+    for (let i = 1; i <= 30; i++) {
+      const n1 = `slide${i}`;
+      const n2 = `slide${String(i).padStart(2,"0")}`;
+      const bases = [n1, n2, n1.toUpperCase(), n2.toUpperCase(), `Slide${i}`, `Slide${String(i).padStart(2,"0")}`];
+      const exts  = [".jpg",".jpeg",".png",".JPG",".JPEG",".PNG"];
+      for (const b of bases){
+        for (const e of exts){
+          SLIDE_IMAGES.push(`images/${b}${e}`);
+        }
+      }
     }
 
     const STORAGE_KEY = "ramadan_dream_beirut_settings_v1";
@@ -491,8 +477,8 @@
     const DEFAULTS = {
       city: "Baghdad",
       country: "Iraq",
-      sect: "sunni",     // sunni | shia
-      manualOffset: 0,   // affects Hijri display day only (and Ramadan day)
+      sect: "sunni",
+      manualOffset: 0,
     };
 
     function setStatus(t){ $("statusPill").textContent = t; }
@@ -513,7 +499,6 @@
     }
 
     function toAmPm(hhmm){
-      // input like "17:55"
       if(!hhmm || typeof hhmm !== "string") return "—";
       const m = hhmm.match(/^(\d{1,2}):(\d{2})/);
       if(!m) return hhmm;
@@ -527,7 +512,6 @@
     }
 
     function fmtGreg(d){
-      // Arabic locale with weekday
       try{
         return new Intl.DateTimeFormat("ar-IQ", {weekday:"long", year:"numeric", month:"long", day:"numeric"}).format(d);
       }catch(_){
@@ -536,7 +520,6 @@
     }
 
     function fmtHijri(d){
-      // Islamic calendar via Intl
       try{
         return new Intl.DateTimeFormat("ar-SA-u-ca-islamic", {weekday:"long", year:"numeric", month:"long", day:"numeric"}).format(d);
       }catch(_){
@@ -575,15 +558,7 @@
       const js = await res.json();
       if(!js || js.code !== 200) throw new Error("Bad response");
       const t = js.data.timings;
-      return {
-        imsak: t.Imsak,
-        fajr: t.Fajr,
-        sunrise: t.Sunrise,
-        dhuhr: t.Dhuhr,
-        asr: t.Asr,
-        maghrib: t.Maghrib,
-        isha: t.Isha
-      };
+      return { imsak:t.Imsak, fajr:t.Fajr, sunrise:t.Sunrise, dhuhr:t.Dhuhr, asr:t.Asr, maghrib:t.Maghrib, isha:t.Isha };
     }
 
     function applyTimingToUI(t){
@@ -612,93 +587,85 @@
       } else {
         $("ramadanDayText").textContent = `(${settings.sect === "shia" ? "الوقف الشيعي" : "الوقت السني"})`;
       }
-
       $("todayTitle").textContent = "اليوم";
     }
 
-    // ===== Marquee stability fix (ONLY affects photo movement) =====
-    let _marqueeBuiltOnce = false;
-    let _marqueeTimer = null;
-    let _marqueeBuildSeq = 0;
+    // ========= Marquee (ثابت + بدون أي حركات متداخلة) =========
+    let marqueeInitDone = false;
 
-    function _restartTrackAnimation(track){
-      // Restart CSS animation cleanly (prevents "multiple speeds" feel)
+    function restartAnim(track){
       track.style.animation = "none";
-      // force reflow
       void track.offsetHeight;
       track.style.animation = "scrollX 26s linear infinite";
     }
 
-    function buildMarquee(){
+    function preload(src, timeoutMs=3500){
+      return new Promise((resolve)=>{
+        const img = new Image();
+        let done = false;
+        const finish = (ok)=>{
+          if(done) return;
+          done = true;
+          resolve(ok ? src : null);
+        };
+        const t = setTimeout(()=>finish(false), timeoutMs);
+        img.onload = ()=>{ clearTimeout(t); finish(true); };
+        img.onerror = ()=>{ clearTimeout(t); finish(false); };
+        img.src = src;
+      });
+    }
+
+    async function initMarqueeOnce(){
+      if(marqueeInitDone) return;
+      marqueeInitDone = true;
+
       const track = $("marqueeTrack");
       const noBox = $("noImagesBox");
       const wrap  = $("marqueeBox");
       if(!track || !noBox || !wrap) return;
 
-      // Cancel any pending previous build timer to prevent late callbacks
-      if(_marqueeTimer) {
-        clearTimeout(_marqueeTimer);
-        _marqueeTimer = null;
-      }
-      const mySeq = ++_marqueeBuildSeq;
-
       track.innerHTML = "";
       noBox.style.display = "none";
 
-      // Build images
-      for (const src of SLIDE_IMAGES) {
+      // جرّب تحميل الصور بشكل سريع، وخذ اللي ينجح فقط
+      const unique = Array.from(new Set(SLIDE_IMAGES));
+      const results = await Promise.all(unique.map(s => preload(s)));
+      const loaded = results.filter(Boolean);
+
+      if(loaded.length === 0){
+        noBox.style.display = "block";
+        return;
+      }
+
+      // ابني نسخة أولى
+      const makePic = (src)=>{
         const pic = document.createElement("div");
         pic.className = "pic";
-
         const img = document.createElement("img");
         img.src = src;
         img.alt = "حلم بيروت";
         img.loading = "eager";
-        img.onerror = () => { pic.remove(); };
-
         pic.appendChild(img);
-        track.appendChild(pic);
+        return pic;
+      };
+
+      for(const src of loaded){
+        track.appendChild(makePic(src));
       }
 
-      // Delay: wait a bit for some images to load/remove (onerror)
-      _marqueeTimer = setTimeout(() => {
-        // If a newer build happened, ignore this callback
-        if(mySeq !== _marqueeBuildSeq) return;
+      // انسخها مرة ثانية (نسختين فقط = لوب ناعم)
+      const firstSet = Array.from(track.children);
+      for(const node of firstSet){
+        track.appendChild(node.cloneNode(true));
+      }
 
-        const base = Array.from(track.querySelectorAll(".pic"));
-        if(base.length === 0){
-          noBox.style.display = "block";
-          return;
-        }
-
-        // Duplicate once for core loop
-        for(const node of base){
-          track.appendChild(node.cloneNode(true));
-        }
-
-        // Ensure wide enough to avoid empty gaps on large screens
-        const minWidth = wrap.clientWidth * 3;
-        while (track.scrollWidth < minWidth){
-          for(const node of base){
-            track.appendChild(node.cloneNode(true));
-          }
-        }
-
-        requestAnimationFrame(() => {
-          const shift = track.scrollWidth / 2;
-          track.style.setProperty("--shift", shift + "px");
-          _restartTrackAnimation(track);
-        });
-      }, 650);
+      // احسب الشفت = عرض النسخة الأولى
+      requestAnimationFrame(()=>{
+        const shift = track.scrollWidth / 2;
+        track.style.setProperty("--shift", shift + "px");
+        restartAnim(track);
+      });
     }
-
-    function ensureMarquee(){
-      // Build marquee ONE time only; stops re-building on every render (which resets/changes speed)
-      if(_marqueeBuiltOnce) return;
-      _marqueeBuiltOnce = true;
-      buildMarquee();
-    }
-    // ===== End marquee fix =====
 
     async function render(){
       const settings = loadSettings();
@@ -719,11 +686,10 @@
         setStatus("فشل التحديث");
       }
 
-      // Only initialize marquee once
-      ensureMarquee();
+      // لا تعيد بناء السلايدر كل مرة — مرة واحدة فقط
+      initMarqueeOnce();
     }
 
-    // Events
     document.addEventListener("DOMContentLoaded", () => {
       render();
     });
