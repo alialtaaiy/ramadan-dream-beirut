@@ -202,7 +202,8 @@
 
     /* ===== Infinite marquee (FIXED - Professional) ===== */
     #marqueeBox{
-      margin-top:12px;
+            direction:ltr; /* مهم: يمنع تكرار نفس 3 صور بسبب RTL */
+margin-top:12px;
       border-radius:18px;
       border:1px solid rgba(245,196,0,.18);
       background:rgba(255,255,255,.03);
@@ -210,7 +211,8 @@
       position:relative;
     }
     #marqueeTrack{
-      /* JS sets --shift and --dur */
+            direction:ltr; /* اجعل ترتيب الصور LTR داخل الماركي */
+/* JS sets --shift and --dur */
       --shift: 800px;
       --dur: 26s;
       display:flex;
